@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-      /usr/sbin/update-grub
+      update-grub
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
