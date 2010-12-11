@@ -1,0 +1,30 @@
+The Debian Package grml-rescueboot
+----------------------------------
+
+Usually systems are rescued with CD or usb stick. grml-rescueboot makes
+it possible to simply copy an ISO image onto harddisk and boot the
+rescue image. This eliminates the need to carry around a usb stick
+to rescue a system.
+grml-rescueboot includes the script 42_grml which is installed in
+/etc/grub.d and run when update-grub is executed. The script looks for
+ISO images in /boot/grml/ and adds an entry for each image found.
+
+Howto:
+------
+
+- Get a recent grml image from http://grml.org/download/
+- Copy the image to /boot/grml
+- Run update-grub
+- Reboot and enjoy your new rescue system
+
+Limitations:
+------------
+
+grml-rescueboot uses the loopback feature of grub2, so it won't work
+with legacy grub. Furthermore the ISO image needs to support
+loopback.cfg, a file which is placed in /boot/grub/. Grml supports
+loopback.cfg beginning with version 2010.04.
+More technical details can be found here: 
+http://www.supergrubdisk.org/wiki/Loopback.cfg
+
+ -- Andreas "Jimmy" Gredler <jimmy@grml.org>  Sat, 06 Nov 2010 12:28:45 +0100

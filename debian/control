@@ -1,0 +1,16 @@
+Source: grml-rescueboot
+Section: misc
+Priority: extra
+Maintainer: Andreas "Jimmy" Gredler <jimmy@grml.org>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.3
+Homepage: http://git.grml.org/?p=grml-rescueboot.git
+
+Package: grml-rescueboot
+Architecture: any
+Depends: grub-pc, ${shlibs:Depends}, ${misc:Depends}
+Description: Integrates ISO-booting into grub
+ grml-rescueboot includes a script for update-grub which looks for grml
+ ISO images in /boot/grml and automatically adds an entry for each
+ image. The purpose is to use one of those images to boot a rescue
+ system without using a CD or usb stick.
