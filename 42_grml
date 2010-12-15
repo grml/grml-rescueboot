@@ -1,20 +1,10 @@
 #! /bin/sh -e
-
-# grub-mkconfig helper script.
-# Copyright (C) 2006,2007,2008,2009,2010  Free Software Foundation, Inc.
-#
-# GRUB is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# GRUB is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
+# Filename:      42_grml
+# Purpose:       grub-mkconfig helper script for Grml rescue systems
+# Authors:       grml-team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
+# Bug-Reports:   see http://grml.org/bugs/
+# License:       This file is licensed under the GPL v2.
+################################################################################
 
 prefix=/usr
 exec_prefix=${prefix}
@@ -22,22 +12,26 @@ bindir=${exec_prefix}/bin
 libdir=${exec_prefix}/lib
 . ${libdir}/grub/grub-mkconfig_lib
 
-list=`for i in /boot/grml/*.iso ; do
+list=$(for i in /boot/grml/*.iso ; do
         if grub_file_is_not_garbage "$i" ; then echo -n "$i " ; fi
-      done`
+      done)
 
 for grmliso in $list ; do
-  echo "Found grml iso image: $grmliso" >&2
-  grml=`basename $grmliso`
+  rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"
+  grml="$(basename $grmliso)"
+
+  echo "Found Grml ISO image: $grmliso" >&2
   title="Grml Rescue System ($grml)"
 
   cat << EOF
     menuentry "${title}" {
-    iso_path=$grmliso
-    export iso_path 
-    loopback loop $grmliso
+    iso_path=${rel_dirname}/$grml
+    export iso_path
+    loopback loop \$iso_path
     set root=(loop)
     configfile /boot/grub/loopback.cfg
     }
 EOF
 done
+
+## END OF FILE #################################################################
