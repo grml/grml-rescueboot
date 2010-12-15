@@ -3,7 +3,7 @@
 # Purpose:       grub-mkconfig helper script for Grml rescue systems
 # Authors:       grml-team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
 # Bug-Reports:   see http://grml.org/bugs/
-# License:       This file is licensed under the GPL v2.
+# License:       This file is licensed under the GPL v2+.
 ################################################################################
 
 prefix=/usr
@@ -16,6 +16,10 @@ list=$(for i in /boot/grml/*.iso ; do
         if grub_file_is_not_garbage "$i" ; then echo -n "$i " ; fi
       done)
 
+if [ -r /etc/default/grml-rescueboot ] ; then
+  . /etc/default/grml-rescueboot
+fi
+
 for grmliso in $list ; do
   rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"
   grml="$(basename $grmliso)"
@@ -24,13 +28,13 @@ for grmliso in $list ; do
   title="Grml Rescue System ($grml)"
 
   cat << EOF
-    menuentry "${title}" {
-    iso_path=${rel_dirname}/$grml
-    export iso_path
-    loopback loop \$iso_path
-    set root=(loop)
-    configfile /boot/grub/loopback.cfg
-    }
+menuentry "${title}" {
+        iso_path="${rel_dirname}/$grml $CUSTOM_BOOTOPTIONS"
+        export iso_path
+        loopback loop "${rel_dirname}/$grml"
+        set root=(loop)
+        configfile /boot/grub/loopback.cfg
+}
 EOF
 done
 
