@@ -8,13 +8,14 @@ It was downloaded from:
 
 Copyright:
 
-    <Copyright (C) 2010++ Andreas "Jimmy" Gredler>
+    Copyright (C) 2010 Andreas "Jimmy" Gredler
+    Copyright (C) 2010 Michael Prokop
 
 License:
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the Free Software Foundation, either version 2 of the License, or
     (at your option) any later version.
 
     This package is distributed in the hope that it will be useful,
@@ -26,10 +27,11 @@ License:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 On Debian systems, the complete text of the GNU General
-Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
+Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
 
 The Debian packaging is:
 
     Copyright (C) 2010 Andreas "Jimmy" Gredler <jimmy@grml.org>
 
-and is licensed under the GPL version 3, see above.
+and is licensed under the GPL version 2 or (at your option) any later version,
+see above.
