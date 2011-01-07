@@ -6,8 +6,12 @@ set -e
 case "$1" in
     configure)
       if ls /boot/grml/*iso >/dev/null 2>&1 ; then
-	echo "ISOs found inside /boot/grml, invoking update-grub:"
-        update-grub
+	if which update-grub >/dev/null 2>&1; then
+	  echo "ISOs found inside /boot/grml, invoking update-grub:"
+          update-grub
+	else
+	  echo "WARN: ISOs found inside /boot/grml but update-grub not present (huh?)"
+        fi
       else
 	echo "No *.iso files found inside /boot/grml/. Please create /boot/grml and"
 	echo "place Grml ISO(s) there. Finally invoke update-grub and enjoy your rescue system."
