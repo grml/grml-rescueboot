@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#!/bin/sh
 # Filename:      42_grml
 # Purpose:       grub-mkconfig helper script for Grml rescue systems
 # Authors:       grml-team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
@@ -6,19 +6,24 @@
 # License:       This file is licensed under the GPL v2+.
 ################################################################################
 
+set -e
+
 prefix=/usr
 exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 libdir=${exec_prefix}/lib
 . ${libdir}/grub/grub-mkconfig_lib
 
-list=$(for i in /boot/grml/*.iso ; do
-        if grub_file_is_not_garbage "$i" ; then echo -n "$i " ; fi
-      done)
+# default unless configured otherwise:
+ISO_LOCATION="/boot/grml"
 
 if [ -r /etc/default/grml-rescueboot ] ; then
   . /etc/default/grml-rescueboot
 fi
+
+list=$(for i in "${ISO_LOCATION}"/*.iso ; do
+         if grub_file_is_not_garbage "$i" ; then echo -n "$i " ; fi
+       done)
 
 for grmliso in $list ; do
   rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"

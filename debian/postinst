@@ -5,16 +5,24 @@ set -e
 
 case "$1" in
     configure)
-      if ls /boot/grml/*iso >/dev/null 2>&1 ; then
-	if which update-grub >/dev/null 2>&1; then
-	  echo "ISOs found inside /boot/grml, invoking update-grub:"
-          update-grub
-	else
-	  echo "WARN: ISOs found inside /boot/grml but update-grub not present (huh?)"
-        fi
+      # default, unless configured otherwise:
+      ISO_LOCATION=/boot/grml
+
+      if [ -r /etc/default/grml-rescueboot ] ; then
+	. /etc/default/grml-rescueboot
+      fi
+
+      if ! ls "${ISO_LOCATION}"/*iso >/dev/null 2>&1 ; then
+	echo "INFO: No *.iso files found inside ${ISO_LOCATION}."
+        echo "INFO: Please create ${ISO_LOCATION} and place rescue ISO(s) there."
+	echo "INFO: Finally invoke update-grub and enjoy your rescue system."
       else
-	echo "No *.iso files found inside /boot/grml/. Please create /boot/grml and"
-	echo "place Grml ISO(s) there. Finally invoke update-grub and enjoy your rescue system."
+	if ! which update-grub >/dev/null 2>&1; then
+	  echo "WARN: ISOs found inside ${ISO_LOCATION} but update-grub not present (huh?)"
+	else
+	  echo "INFO: ISOs found inside ${ISO_LOCATION}, invoking update-grub:"
+          update-grub
+        fi
       fi
     ;;
 
