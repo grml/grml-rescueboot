@@ -1,3 +1,13 @@
+grml-rescueboot (0.2.0) unstable; urgency=low
+
+  * [199476a] post-maintainer scripts: make sure update-grub is present
+    before executing it - thanks to Samat K Jain for reporting.
+  * [d583c5d] Add TODO file.
+  * [1e7153d] Support setting location of ISOs via ISO_LOCATION in
+    /etc/default/grml-rescueboot.
+
+ -- Michael Prokop <mika@grml.org>  Fri, 07 Jan 2011 11:30:24 +0100
+
 grml-rescueboot (0.1.0) unstable; urgency=low
 
   [ Andreas "Jimmy" Gredler ]
