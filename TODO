@@ -1,0 +1,2 @@
+* standarized support for custom options (so it works e.g. with Ubuntu as well)
+* set bootentry title within GRUB based on ISO (so e.g. "Grml" becomes "Ubuntu")
