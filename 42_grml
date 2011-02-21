@@ -35,8 +35,10 @@ for grmliso in $list ; do
   cat << EOF
 menuentry "${title}" {
 $(prepare_grub_to_access_device ${GRUB_DEVICE_BOOT} | sed -e "s/^/        /")
-        iso_path="${rel_dirname}/$grml $CUSTOM_BOOTOPTIONS"
+        iso_path="${rel_dirname}/${grml}"
         export iso_path
+        kernelopts="$CUSTOM_BOOTOPTIONS"
+        export kernelopts
         loopback loop "${rel_dirname}/$grml"
         set root=(loop)
         configfile /boot/grub/loopback.cfg
