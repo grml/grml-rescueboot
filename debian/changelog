@@ -1,3 +1,12 @@
+grml-rescueboot (0.3.0) unstable; urgency=low
+
+  * [3c6f08e] Use prepare_grub_to_access_device to provide further menu
+    entry details for GRUB. - thanks to Frédéric Boiteux
+    <fboiteux@calistel.com> for the bugreport.
+  * [81d5556] Implement CUSTOM_BOOTOPTIONS handling via kernelopts.
+
+ -- Michael Prokop <mika@grml.org>  Mon, 21 Feb 2011 22:23:25 +0100
+
 grml-rescueboot (0.2.0) unstable; urgency=low
 
   * [199476a] post-maintainer scripts: make sure update-grub is present
