@@ -34,6 +34,7 @@ for grmliso in $list ; do
 
   cat << EOF
 menuentry "${title}" {
+$(prepare_grub_to_access_device ${GRUB_DEVICE_BOOT} | sed -e "s/^/        /")
         iso_path="${rel_dirname}/$grml $CUSTOM_BOOTOPTIONS"
         export iso_path
         loopback loop "${rel_dirname}/$grml"
