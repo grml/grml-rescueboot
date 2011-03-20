@@ -1,3 +1,12 @@
+grml-rescueboot (0.3.1) unstable; urgency=low
+
+  * [6323d69] Probe the device where the Grml ISO is being stored using
+    ${grub_probe} instead of using ${GRUB_DEVICE_BOOT}.
+    [Closes: issue977] - thanks to Johann Felix Soden for the
+    bugreport and the patch.
+
+ -- Michael Prokop <mika@grml.org>  Mon, 21 Mar 2011 00:25:57 +0100
+
 grml-rescueboot (0.3.0) unstable; urgency=low
 
   * [3c6f08e] Use prepare_grub_to_access_device to provide further menu
