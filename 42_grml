@@ -49,7 +49,7 @@ menuentry "${title}" {
 $(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
         iso_path="${rel_dirname}/${grml}"
         export iso_path
-        kernelopts="$CUSTOM_BOOTOPTIONS $additional_param"
+        kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
         export kernelopts
         loopback loop "${rel_dirname}/$grml"
         set root=(loop)
