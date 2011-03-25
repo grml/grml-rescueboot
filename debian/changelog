@@ -1,3 +1,13 @@
+grml-rescueboot (0.3.3) unstable; urgency=low
+
+  [ Ulrich Dangel ]
+  * [b2a6895] Add support for raid devices
+
+  [ Christian Hofstaedtler ]
+  * [0858c92] Work around grub sillyness of adding " to cmdline
+
+ -- Christian Hofstaedtler <ch@grml.org>  Sat, 26 Mar 2011 00:42:23 +0100
+
 grml-rescueboot (0.3.2) unstable; urgency=low
 
   [ Ulrich Dangel ]
