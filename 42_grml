@@ -21,23 +21,35 @@ if [ -r /etc/default/grml-rescueboot ] ; then
   . /etc/default/grml-rescueboot
 fi
 
-list=$(for i in "${ISO_LOCATION}"/*.iso ; do
-         if grub_file_is_not_garbage "$i" ; then echo -n "$i " ; fi
-       done)
+iso_list=""
+for file in "${ISO_LOCATION}"/*.iso ; do
+     if grub_file_is_not_garbage "$file" ; then
+       iso_list="$iso_list $file "
+     fi
+done
 
-for grmliso in $list ; do
+for grmliso in $iso_list ; do
   rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"
   grml="$(basename $grmliso)"
+  device="$(${grub_probe} -t device ${grmliso})"
+
+  additional_param=""
+
+  case "$device" in
+      *mapper* )
+      additional_param="live-media=$device"
+      ;;
+  esac
 
   echo "Found Grml ISO image: $grmliso" >&2
   title="Grml Rescue System ($grml)"
 
   cat << EOF
 menuentry "${title}" {
-$(prepare_grub_to_access_device $(${grub_probe} -t device ${grmliso}) | sed -e "s/^/        /")
+$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
         iso_path="${rel_dirname}/${grml}"
         export iso_path
-        kernelopts="$CUSTOM_BOOTOPTIONS"
+        kernelopts="$CUSTOM_BOOTOPTIONS $additional_param"
         export kernelopts
         loopback loop "${rel_dirname}/$grml"
         set root=(loop)
