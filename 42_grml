@@ -36,7 +36,7 @@ for grmliso in $iso_list ; do
   additional_param=""
 
   case "$device" in
-      *mapper* )
+      /dev/mapper*|/dev/md*)
       additional_param="live-media=$device"
       ;;
   esac
