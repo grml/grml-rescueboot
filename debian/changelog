@@ -1,3 +1,10 @@
+grml-rescueboot (0.3.2) unstable; urgency=low
+
+  [ Ulrich Dangel ]
+  * [e5a68ae] Refactored 42_grml and support lvm devices [Closes: issue971].
+
+ -- Christian Hofstaedtler <ch@grml.org>  Fri, 25 Mar 2011 22:52:36 +0100
+
 grml-rescueboot (0.3.1) unstable; urgency=low
 
   * [6323d69] Probe the device where the Grml ISO is being stored using
