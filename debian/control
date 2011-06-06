@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Andreas "Jimmy" Gredler <jimmy@grml.org>
 Uploaders: Michael Prokop <mika@grml.org>
 Build-Depends: debhelper (>= 7)
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
 
 Package: grml-rescueboot
