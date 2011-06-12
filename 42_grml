@@ -21,6 +21,58 @@ if [ -r /etc/default/grml-rescueboot ] ; then
   . /etc/default/grml-rescueboot
 fi
 
+resolve_dm_name() {
+  retval="$1"
+  base=${1##*/}
+  for block in /sys/block /sys/class/block ; do
+    [ ! -d ${block}/${base}/dm ] && continue
+    retval="/dev/mapper/$(cat ${block}/${base}/dm/name)"
+    break
+  done
+  case "$retval" in
+    /dev/dm-*)
+    minor=${retval##*-}
+   retval="/dev/mapper/$(dmsetup info -C --noheadings -o name -j 253 -m $minor)"
+    ;;
+  esac
+
+  echo "$retval"
+}
+
+get_dependencies() {
+  device=${1}
+  if [ -z ${device} ] ; then
+    return
+  fi
+  device=$(readlink -f ${device})
+  case "$device" in
+    /dev/mapper/*)
+    device="/dev/dm-$(dmsetup info -C --noheadings -o minor "$device")"
+    ;;
+  esac
+
+  base=${device##*/}
+  dependencies=""
+  additional_dependencies=""
+  for block in /sys/block /sys/class/block ; do
+    [ ! -d ${block}/${base}/slaves ] && continue
+    for file in  ${block}/${base}/slaves/* ; do
+      dep_name="/dev/${file##*/}"
+      dep_name=$(resolve_dm_name ${dep_name})
+
+      # resolve recursively all dependencies
+      additional_dependencies=$(get_dependencies ${dep_name})
+
+      dependencies="$dependencies $additional_dependencies $dep_name"
+    done
+    break
+  done
+  echo $dependencies
+
+}
+
+
+
 iso_list=""
 for file in "${ISO_LOCATION}"/*.iso ; do
      if grub_file_is_not_garbage "$file" ; then
@@ -36,9 +88,15 @@ for grmliso in $iso_list ; do
   additional_param=""
 
   case "$device" in
-      /dev/mapper*|/dev/md*)
-      additional_param="live-media=$device"
-      ;;
+    /dev/mapper*|/dev/md*)
+      dependencies=$(get_dependencies ${device})
+      dep_string=""
+      for dep in $dependencies $device ; do
+        dep_string="$dep_string,$dep"
+      done
+      dep_string=${dep_string#,}
+      additional_param="live-media=$dep_string"
+    ;;
   esac
 
   echo "Found Grml ISO image: $grmliso" >&2
