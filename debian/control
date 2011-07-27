@@ -6,6 +6,10 @@ Uploaders: Michael Prokop <mika@grml.org>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.9.2
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
+Vcs-git: git://git.grml.org/grml-rescueboot.git
+Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
+Origin: Grml
+Bugs: mailto:bugs@grml.org
 
 Package: grml-rescueboot
 Architecture: all
