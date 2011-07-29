@@ -9,7 +9,7 @@ It was downloaded from:
 Copyright:
 
     Copyright (C) 2010 Andreas "Jimmy" Gredler
-    Copyright (C) 2010 Michael Prokop
+    Copyright (C) 2010, 2011 Michael Prokop
 
 License:
 
@@ -32,6 +32,7 @@ Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
 The Debian packaging is:
 
     Copyright (C) 2010 Andreas "Jimmy" Gredler <jimmy@grml.org>
+    Copyright (C) 2011 Michael Prokop <mika@grml.org>
 
 and is licensed under the GPL version 2 or (at your option) any later version,
 see above.
