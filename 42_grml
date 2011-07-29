@@ -1,8 +1,7 @@
 #!/bin/sh
 # Filename:      42_grml
 # Purpose:       grub-mkconfig helper script for Grml rescue systems
-# Authors:       grml-team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
-# Bug-Reports:   see http://grml.org/bugs/
+# Authors:       Grml team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
 # License:       This file is licensed under the GPL v2+.
 ################################################################################
 
