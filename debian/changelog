@@ -1,3 +1,25 @@
+grml-rescueboot (0.4.0) unstable; urgency=low
+
+  The "initial upload to Debian" release.
+
+  [ Michael Prokop ]
+  * [241540a] Bump Standards-Version to 3.9.2.
+  * [d73ed97] Adjust Maintainers and Uploaders field, add DM-Upload-
+    Allowed and remove Origin/Bugs fields for inclusion in Debian.
+  * [1415f0a] Adjust header information in 42_grml for inclusion in
+    Debian.
+  * [886df31] Adjust README file WRT usage scenario of grml-rescueboot.
+  * [ccfa8e7] Control file: switch Section from misc to admin.
+  * [a499f1a] Update copyright information.
+
+  [ Ulrich Dangel ]
+  * [0b03180] Determine dependency for target device.
+
+  [ Christian Hofstaedtler ]
+  * [c55fca9] Update debian/control headers Homepage, Vcs-*, Origin, Bugs.
+
+ -- Michael Prokop <mika@grml.org>  Fri, 29 Jul 2011 12:34:13 +0200
+
 grml-rescueboot (0.3.3) unstable; urgency=low
 
   [ Ulrich Dangel ]
