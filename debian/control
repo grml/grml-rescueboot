@@ -1,5 +1,5 @@
 Source: grml-rescueboot
-Section: misc
+Section: admin
 Priority: extra
 Maintainer: Grml Team <team@grml.org>
 Uploaders: Michael Prokop <mika@debian.org>, Alexander Wirt <formorer@debian.org>, Christian Hofstaedtler <christian@hofstaedtler.name>, Ulrich Dangel <mru@spamt.net>
