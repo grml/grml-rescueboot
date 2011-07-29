@@ -4,7 +4,8 @@ The Debian Package grml-rescueboot
 Usually systems are rescued with CD or usb stick. grml-rescueboot makes
 it possible to simply copy an ISO image to the harddisk and boot the
 rescue image. This eliminates the need to carry around a usb stick
-to rescue a system.
+to rescue a system as long as the hard disk and the boot manager still
+work.
 
 grml-rescueboot includes the script 42_grml which is installed in
 /etc/grub.d and run when update-grub is executed. The script looks for
