@@ -1,3 +1,18 @@
+grml-rescueboot (0.4.1) unstable; urgency=low
+
+  [ Christian Hofstaedtler ]
+  * [999a45a] uppercase acronyms in package description (Closes: #637846)
+  * [19ae090] Switch to source format 3.0 (native)
+  * [db232cc] Override lintian I: package-contains-empty-directory
+
+  [ Michael Prokop ]
+  * [2b880e9] Improve package description to clarify usage scenarios
+    (Closes: #652816)
+  * [645c408] Install and improve README to provide usage instructions
+    (Closes: #653695)
+
+ -- Michael Prokop <mika@grml.org>  Thu, 12 Jan 2012 15:40:07 +0100
+
 grml-rescueboot (0.4.0) unstable; urgency=low
 
   The "initial upload to Debian" release.
