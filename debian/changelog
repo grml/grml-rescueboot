@@ -1,3 +1,10 @@
+grml-rescueboot (0.4.2) unstable; urgency=low
+
+  * [395abc5] Maintainer scripts: test for presence of grub.cfg, don't
+    execute update-grub otherwise (Closes: #660588)
+
+ -- Michael Prokop <mika@grml.org>  Mon, 20 Feb 2012 14:58:33 +0100
+
 grml-rescueboot (0.4.1) unstable; urgency=low
 
   [ Christian Hofstaedtler ]
