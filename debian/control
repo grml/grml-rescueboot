@@ -11,7 +11,7 @@ Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
 
 Package: grml-rescueboot
 Architecture: all
-Depends: grub-pc, ${shlibs:Depends}, ${misc:Depends}
+Depends: grub-pc | grub-efi-amd64, ${shlibs:Depends}, ${misc:Depends}
 Description: Integrates Grml ISO booting into GRUB
  This package provides a script for update-grub which looks for
  Grml ISO images in /boot/grml and automatically adds an entry
