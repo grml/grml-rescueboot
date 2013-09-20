@@ -100,10 +100,11 @@ for grmliso in $iso_list ; do
 
   echo "Found Grml ISO image: $grmliso" >&2
   title="Grml Rescue System ($grml)"
+  grub_prep=$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
 
   cat << EOF
 menuentry "${title}" {
-$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
+${grub_prep}
         iso_path="${rel_dirname}/${grml}"
         export iso_path
         kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
