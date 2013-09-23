@@ -1,3 +1,10 @@
+grml-rescueboot (0.4.4) unstable; urgency=low
+
+  [ Michael Lass ]
+  * [700e01c] Fix leaked file descriptors
+
+ -- Michael Prokop <mika@grml.org>  Mon, 23 Sep 2013 10:08:04 +0200
+
 grml-rescueboot (0.4.3) unstable; urgency=low
 
   [ Christian Hofstaedtler ]
