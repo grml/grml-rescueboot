@@ -11,7 +11,14 @@ prefix=/usr
 exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 libdir=${exec_prefix}/lib
-. ${libdir}/grub/grub-mkconfig_lib
+
+if [ -r ${libdir}/grub/grub-mkconfig_lib ] ; then
+  . ${libdir}/grub/grub-mkconfig_lib
+elif [ -r /usr/share/grub/grub-mkconfig_lib ] ; then # fallback for e.g. Fedora
+  . /usr/share/grub/grub-mkconfig_lib
+else
+  echo "Could not locate file grub-mkconfig_lib, please report a bug." >&2
+fi
 
 # default unless configured otherwise:
 ISO_LOCATION="/boot/grml"
