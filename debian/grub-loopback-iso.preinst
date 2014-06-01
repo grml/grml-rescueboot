@@ -1,0 +1,43 @@
+#!/bin/sh
+# preinst script for grub-loopback-iso
+
+set -e
+
+remove_old_grubd() {
+  # Old grml-rescueboot 42_grml is saved upon upgrade as a conffile.
+  # Remove it if it matches known default hashes; otherwise warn.
+  [ -e /etc/grub.d/42_grml ] || return
+
+  default_grubd=""
+  case "$(md5sum /etc/grub.d/42_grml | cut -d' ' -f1)" in
+    1db35de0d6dddb149bd609689ef98b30) # 0.4.2
+      default_grubd=yes
+      ;;
+    c1afca4d42c494a7421c27ad9fb731fd) # 0.4.4
+      default_grubd=yes
+      ;;
+    ecc549965cc4b4d0d762a3ba6dfe7cb5) # 0.4.5
+      default_grubd=yes
+      ;;
+  esac
+
+  if [ -n "$default_grubd" ]; then
+    rm -f /etc/grub.d/42_grml
+    return
+  else
+    echo >&2
+    echo "WARNING: /etc/grub.d/42_grml appears to have been modified." >&2
+    echo "Please remove it and/or purge the transitional grml-rescueboot package." >&2
+    echo >&2
+  fi
+}
+
+case "$1" in
+  install|upgrade)
+    remove_old_grubd
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

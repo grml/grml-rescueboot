@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for grml-rescueboot
+# postrm script for grub-loopback-iso
 
 set -e
 

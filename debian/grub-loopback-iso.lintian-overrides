@@ -1,0 +1,2 @@
+# Shipping /boot/isos (empty) is intentional.
+grub-loopback-iso binary: package-contains-empty-directory boot/isos/

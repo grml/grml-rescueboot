@@ -1,2 +1,0 @@
-# Shipping /boot/grml (empty) is intentional.
-grml-rescueboot binary: package-contains-empty-directory boot/grml/

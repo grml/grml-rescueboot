@@ -1,0 +1,8 @@
+## Configuration file for Debian package grub-loopback-iso.
+
+# Location of ISOs:
+# ISO_LOCATION="/boot/isos"
+
+# To set any specific bootoptions for loopback ISOs
+# present in /boot/isos just set and enable the following option:
+# CUSTOM_BOOTOPTIONS="ssh=password lang=de"

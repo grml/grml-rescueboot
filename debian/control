@@ -1,4 +1,4 @@
-Source: grml-rescueboot
+Source: grub-loopback-iso
 Section: admin
 Priority: extra
 Maintainer: Grml Team <team@grml.org>
@@ -12,13 +12,22 @@ Homepage: http://git.grml.org/?p=grml-rescueboot.git
 Vcs-git: git://git.grml.org/grml-rescueboot.git
 Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
 
-Package: grml-rescueboot
+Package: grub-loopback-iso
 Architecture: all
 Depends: grub-pc | grub-efi-amd64,
          ${misc:Depends},
          ${shlibs:Depends}
-Description: Integrates Grml ISO booting into GRUB
- This package provides a script for update-grub which looks for
- Grml ISO images in /boot/grml and automatically adds an entry
- for each image. The purpose is to use one of those images to
- boot a Grml rescue system without using a CD or USB stick.
+Replaces: grml-rescueboot (<< 0.4.6~)
+Breaks: grml-rescueboot (<< 0.4.6~)
+Description: Boot a compatible loopback ISO from GRUB 2
+ grub-loopback-iso is a GRUB 2 configuration hook to boot compatible
+ ISOs stored on the host filesystem. The stanzas built utilize GRUB
+ 2's loopback mount support to chain a /boot/grub/loopback.cfg file on
+ an ISO.
+
+Package: grml-rescueboot
+Depends: grub-loopback-iso, ${misc:Depends}
+Architecture: all
+Section: oldlibs
+Description: transitional dummy package
+ This is a transitional dummy package. It can safely be removed.

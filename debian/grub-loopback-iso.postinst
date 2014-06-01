@@ -1,17 +1,35 @@
 #!/bin/sh
-# postinst script for grml-rescueboot
+# postinst script for grub-loopback-iso
 
 set -e
 
 update_grub_wrapper() {
-  # default, unless configured otherwise:
-  ISO_LOCATION=/boot/grml
+  # default unless configured otherwise:
+  ISO_LOCATION="/boot/isos"
 
+  # grml-rescueboot backwards compatibility
+  if [ -d /boot/grml ]; then
+    ISO_LOCATION="${ISO_LOCATION} /boot/grml"
+  fi
+
+  if [ -r /etc/default/grub-loopback-isos ] ; then
+    . /etc/default/grub-loopback-isos
+  fi
+
+  # grml-rescueboot backwards compatibility
   if [ -r /etc/default/grml-rescueboot ] ; then
     . /etc/default/grml-rescueboot
   fi
 
-  if ! ls "${ISO_LOCATION}"/*iso >/dev/null 2>&1 ; then
+  iso_list=""
+  for dir in $ISO_LOCATION; do
+    for file in "$dir"/*.iso ; do
+      [ -e "$file" ] || continue
+      iso_list="$iso_list $file"
+    done
+  done
+
+  if [ -z "$iso_list" ]; then
     echo "INFO: No *.iso files found inside ${ISO_LOCATION}."
     echo "INFO: Please create ${ISO_LOCATION} and place rescue ISO(s) there."
     echo "INFO: Finally invoke update-grub and enjoy your rescue system."

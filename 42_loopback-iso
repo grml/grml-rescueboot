@@ -1,6 +1,6 @@
 #!/bin/sh
-# Filename:      42_grml
-# Purpose:       grub-mkconfig helper script for Grml rescue systems
+# Filename:      42_loopback-iso
+# Purpose:       grub-mkconfig helper script for loopback.cfg-compatible ISOs
 # Authors:       Grml team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
 # License:       This file is licensed under the GPL v2+.
 ################################################################################
@@ -21,8 +21,18 @@ else
 fi
 
 # default unless configured otherwise:
-ISO_LOCATION="/boot/grml"
+ISO_LOCATION="/boot/isos"
 
+# grml-rescueboot backwards compatibility
+if [ -d /boot/grml ]; then
+  ISO_LOCATION="${ISO_LOCATION} /boot/grml"
+fi
+
+if [ -r /etc/default/grub-loopback-isos ] ; then
+  . /etc/default/grub-loopback-isos
+fi
+
+# grml-rescueboot backwards compatibility
 if [ -r /etc/default/grml-rescueboot ] ; then
   . /etc/default/grml-rescueboot
 fi
@@ -80,16 +90,18 @@ get_dependencies() {
 
 
 iso_list=""
-for file in "${ISO_LOCATION}"/*.iso ; do
+for dir in $ISO_LOCATION; do
+  for file in "$dir"/*.iso ; do
      if grub_file_is_not_garbage "$file" ; then
        iso_list="$iso_list $file "
      fi
+  done
 done
 
-for grmliso in $iso_list ; do
-  rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"
-  grml="$(basename $grmliso)"
-  device="$(${grub_probe} -t device ${grmliso})"
+for iso in $iso_list ; do
+  rel_dirname="$(make_system_path_relative_to_its_root $(dirname $iso))"
+  isofn="$(basename $iso)"
+  device="$(${grub_probe} -t device ${iso})"
 
   additional_param=""
 
@@ -105,18 +117,18 @@ for grmliso in $iso_list ; do
     ;;
   esac
 
-  echo "Found Grml ISO image: $grmliso" >&2
-  title="Grml Rescue System ($grml)"
+  echo "Found Loopback ISO image: $iso" >&2
+  title="Bootable ISO ($isofn)"
   grub_prep=$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
 
   cat << EOF
 menuentry "${title}" {
 ${grub_prep}
-        iso_path="${rel_dirname}/${grml}"
+        iso_path="${rel_dirname}/${isofn}"
         export iso_path
         kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
         export kernelopts
-        loopback loop "${rel_dirname}/$grml"
+        loopback loop "${rel_dirname}/$isofn"
         set root=(loop)
         configfile /boot/grub/loopback.cfg
 }

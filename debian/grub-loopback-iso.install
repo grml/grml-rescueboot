@@ -1,0 +1,3 @@
+42_loopback-iso etc/grub.d/
+debian/README usr/share/doc/grub-loopback-iso/
+etc/default etc/

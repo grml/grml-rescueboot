@@ -1,38 +1,20 @@
-The Debian Package grml-rescueboot
-==================================
+== About ==
 
-Usually systems are rescued with CD or USB stick. grml-rescueboot makes
-it possible to simply copy an Grml ISO image to the harddisk and boot the
-rescue image. This eliminates the need to carry around a USB stick
-to rescue a system as long as the hard disk and the boot manager still
-work.
+grub-loopback-iso is a GRUB 2 configuration hook to boot compatible
+ISOs stored on the host filesystem. The stanzas built utilize GRUB
+2's loopback mount support to chain a /boot/grub/loopback.cfg file on
+an ISO.
 
-grml-rescueboot includes the script 42_grml which is installed in
-/etc/grub.d and run when update-grub is executed. The script looks for
-ISO images in /boot/grml/ and adds an entry for each image found.
+== Installation ==
 
-Howto
------
+Place compatible ISOs in a suitable location.  By default, this is
+/boot/isos, but may be changed by editing /etc/default/grub-loopback-iso
+(for example, if the /boot partition is too small).  However, keep in
+mind that the ISO's operating system may have restrictions on what type
+of partition the ISO may be placed on; it is the ISO's operating system
+(initrd most likely) which is responsible for finding the ISO by
+scanning partitions, so the partition and filesystem must be known to
+the ISO operating system.
 
-- Get a recent Grml image from http://grml.org/download/
-- Copy the image to /boot/grml
-- Run update-grub
-- Reboot and enjoy your new rescue system
-
-Limitations
------------
-
-grml-rescueboot uses the loopback feature of GRUB2, so it won't work
-with legacy GRUB. Furthermore the ISO image needs to support
-loopback.cfg, a file which is placed in /boot/grub/. Grml supports
-loopback.cfg beginning with release version 2010.04.
-
-More technical details can be found here:
-http://www.supergrubdisk.org/wiki/Loopback.cfg
-
-Create your own ISO
--------------------
-
-You can make your own Grml Live ISO image using the grml-live
-build framework. Visit http://grml.org/grml-live/ and
-http://grml.org/ for more information.
+Then simply run "update-grub", and verify the correct stanzas have been
+created in /boot/grub/grub.cfg .
