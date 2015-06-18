@@ -87,7 +87,7 @@ for file in "${ISO_LOCATION}"/*.iso ; do
 done
 
 for grmliso in $iso_list ; do
-  rel_dirname="$(make_system_path_relative_to_its_root $(dirname $grmliso))"
+  rel_dirname="$(dirname $(make_system_path_relative_to_its_root $grmliso))"
   grml="$(basename $grmliso)"
   device="$(${grub_probe} -t device ${grmliso})"
 
@@ -112,11 +112,11 @@ for grmliso in $iso_list ; do
   cat << EOF
 menuentry "${title}" {
 ${grub_prep}
-        iso_path="${rel_dirname}/${grml}"
+        iso_path="${rel_dirname%/}/${grml}"
         export iso_path
         kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
         export kernelopts
-        loopback loop "${rel_dirname}/$grml"
+        loopback loop "${rel_dirname%/}/$grml"
         set root=(loop)
         configfile /boot/grub/loopback.cfg
 }
