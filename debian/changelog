@@ -1,3 +1,13 @@
+grml-rescueboot (0.4.6) unstable; urgency=medium
+
+  [ ste-fan ]
+  * [f7942b9] Fix relative path detection of ISO files
+
+  [ Michael Prokop ]
+  * [2057e6c] Bump Standards-Version to 3.9.6
+
+ -- Michael Prokop <mika@grml.org>  Fri, 19 Jun 2015 09:28:58 +0200
+
 grml-rescueboot (0.4.5) unstable; urgency=medium
 
   * [961213e] Fallback to /usr/share/grub/grub-mkconfig_lib if default
