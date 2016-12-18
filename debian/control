@@ -6,7 +6,7 @@ Uploaders: Michael Prokop <mika@debian.org>,
            Alexander Wirt <formorer@debian.org>,
            Christian Hofstaedtler <zeha@debian.org>,
            Ulrich Dangel <mru@spamt.net>
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 10~)
 Standards-Version: 3.9.8
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
 Vcs-git: git://git.grml.org/grml-rescueboot.git
