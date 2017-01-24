@@ -1,3 +1,12 @@
+grml-rescueboot (0.4.7) unstable; urgency=medium
+
+  [ Christian Hofstaedtler ]
+  * [3e98bac] Update my email address
+  * [28407a9] Bump Standards-Version to 3.9.8 (no changes needed)
+  * [5261deb] Bump debhelper compat level to 10
+
+ -- Michael Prokop <mika@grml.org>  Tue, 24 Jan 2017 21:42:29 +0100
+
 grml-rescueboot (0.4.6) unstable; urgency=medium
 
   [ ste-fan ]
