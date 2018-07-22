@@ -13,8 +13,7 @@ update_grub_wrapper() {
 
   if ! ls "${ISO_LOCATION}"/*iso >/dev/null 2>&1 ; then
     echo "INFO: No *.iso files found inside ${ISO_LOCATION}."
-    echo "INFO: Please create ${ISO_LOCATION} and place rescue ISO(s) there."
-    echo "INFO: Finally invoke update-grub and enjoy your rescue system."
+    echo "INFO: Execute 'update-grml-rescueboot' to download and integrate a Grml ISO."
     return 0
   fi
 

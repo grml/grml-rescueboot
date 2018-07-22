@@ -1,0 +1,153 @@
+#!/bin/bash
+# Simple script to download a Grml ISO image to use with grml-rescueboot
+# Needs the Debian keyring, gpgv + wget
+# Licensed under GPL v2+
+
+set -eu -o pipefail
+
+# defaults
+isotype=full
+bitwidth=auto
+force=0
+retrieved_iso=0
+
+declare -A bin_to_pkg=( [update-grub]=grub-pc [wget]=wget [gpgv]=gpgv )
+declare -a missing_packages=()
+for binary in "${!bin_to_pkg[@]}" ; do
+  if ! which "${binary}" &>/dev/null ; then
+    echo "ERROR: Binary $binary not found." >&2
+    missing_packages+=( ${bin_to_pkg[$binary]} )
+  fi
+done
+
+if ! [ -r /usr/share/keyrings/debian-keyring.gpg ] ; then
+  echo "ERROR: File /usr/share/keyrings/debian-keyring.gpg not found." >&2
+  missing_packages+=( debian-keyring )
+fi
+
+if [ ${#missing_packages[@]} -ne 0 ] ; then
+  echo "TIP: Try running \`apt install ${missing_packages[*]}\` to fix this." >&2
+  exit 1
+fi
+
+usage() {
+  echo "Usage: $(basename "$0") [-f] [-a <32|64|96>] [-t <small|full>]"
+}
+
+while getopts ":a::t::f:h" opt ; do
+  case ${opt} in
+    a)
+      if [ "${OPTARG}" = 32 ] || [ "${OPTARG}" = 64 ] || [ "${OPTARG}" = 96 ] ; then
+	bitwidth="$OPTARG"
+      else
+	echo "ERROR: Invalid value '${OPTARG}'. Supported values: 32, 64, 96" >&2
+	usage >&2 ; exit 1
+      fi
+      ;;
+    t)
+      if [ "${OPTARG}" = "full" ] || [ "${OPTARG}" = "small" ] ; then
+	isotype="${OPTARG}"
+      else
+	echo "ERROR: Invalid value '${OPTARG}'. Supported values: small, full" >&2
+	usage >&2 ; exit 1
+      fi
+      ;;
+    f)
+      force=1
+      ;;
+    h)
+      usage ; exit 0
+      ;;
+    \?)
+      echo "ERROR: Invalid Option: -${OPTARG}" >&2
+      usage >&2 ; exit 1
+      ;;
+    :)
+      echo "ERROR: Option -${OPTARG} requires an argument." >&2
+      ;;
+  esac
+done
+
+if [ "${bitwidth}" = auto ] ; then
+  arch="$(uname -m)"
+  case ${arch} in
+    i?86)
+      bitwidth=32
+      ;;
+    x86_64)
+      bitwidth=64
+      ;;
+    *)
+      echo "ERROR: Unknown architecture '${arch}', please specify -a flag." >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+fi
+
+echo "Finding out latest ISO image..."
+date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml[0-9]{2}-(full|small)_([0-9]{4}\.[0-9]{2})\.iso.*/\2/p' | sort | tail -1)
+
+if [ -z "${date}" ] ; then
+  echo "ERROR: Could not find out latest ISO." >&2
+  exit 1
+fi
+
+output_directory="/boot/grml"
+mkdir -p "${output_directory}"
+
+diskfree=$(df --output=avail /boot/grml | tail -1)
+if [ -z "${diskfree}" ] ; then
+  echo "ERROR: couldn't calculate free disk space in /boot." >&2
+  exit 1
+fi
+
+if [ "${isotype}" = "full" ] && [ "${diskfree}" -lt 1048576 ] ; then
+  if [ "${force}" = "1" ] ; then
+    echo "WARN: There might not be enough free disk space in /boot, continuing anyway as requested via -f."
+  else
+    echo "ERROR: there doesn't seem to be enough free disk space in /boot." >&2
+    echo "Note: >=1GB for grml-full recommended (use -f to force download anyway)."
+    exit 1
+  fi
+elif [ "${isotype}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
+  if [ "${force}" = "1" ] ; then
+    echo "WARN: There might not be enough free disk space in /boot, continuing anyway as requested via -f."
+  else
+    echo "ERROR: there doesn't seem to be enough free disk space in /boot." >&2
+    echo "Note: >=512MB for grml-small recommended (use -f to force download anyway)."
+    exit 1
+  fi
+fi
+
+isoname="grml${bitwidth}-${isotype}_${date}.iso"
+
+if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
+  echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
+  wget -O "${output_directory}/${isoname}" "http://download.grml.org/${isoname}"
+  retrieved_iso=1
+elif [ -f "${output_directory}/${isoname}" ] ; then
+  echo "Found local ${output_directory}/${isoname}, skipping download (use -f to force download)."
+fi
+
+if [ "${retrieved_iso}" = "1" ] ; then
+  sig="$(mktemp)"
+  echo "Verifying ISO..."
+  wget --quiet -O "${sig}" "http://download.grml.org/${isoname}.asc"
+
+  if ! gpgv --keyring /usr/share/keyrings/debian-keyring.gpg "${sig}" "${output_directory}/${isoname}" ; then
+    echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.untrusted'." >&2
+    mv "${output_directory}/${isoname}" "${output_directory}/${isoname}.untrusted"
+    rm "${sig}"
+    exit 1
+  fi
+
+  rm "${sig}"
+
+  echo "ISO file is OK."
+fi
+
+echo "Invoking 'update-grub' now."
+update-grub
+
+echo "Sucessfully finished grml-rescueboot integration."
