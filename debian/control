@@ -2,11 +2,13 @@ Source: grml-rescueboot
 Section: admin
 Priority: extra
 Maintainer: Grml Team <team@grml.org>
-Uploaders: Michael Prokop <mika@debian.org>,
-           Alexander Wirt <formorer@debian.org>,
-           Christian Hofstaedtler <zeha@debian.org>,
-           Ulrich Dangel <mru@spamt.net>
-Build-Depends: debhelper (>= 10~)
+Uploaders:
+ Michael Prokop <mika@debian.org>,
+ Alexander Wirt <formorer@debian.org>,
+ Christian Hofstaedtler <zeha@debian.org>,
+ Ulrich Dangel <mru@spamt.net>,
+Build-Depends:
+ debhelper (>= 10~),
 Standards-Version: 4.1.5
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
 Vcs-git: git://git.grml.org/grml-rescueboot.git
@@ -14,10 +16,14 @@ Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
 
 Package: grml-rescueboot
 Architecture: all
-Depends: grub-pc | grub-efi-amd64,
-         ${misc:Depends},
-         ${shlibs:Depends}
-Recommends: gpgv, wget, debian-keyring
+Depends:
+ grub-pc | grub-efi-amd64,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Recommends:
+ debian-keyring,
+ gpgv,
+ wget,
 Description: Integrates Grml ISO booting into GRUB
  This package provides a script for update-grub which looks for
  Grml ISO images in /boot/grml and automatically adds an entry
