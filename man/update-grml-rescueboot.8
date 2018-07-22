@@ -1,0 +1,25 @@
+.TH update-grml-rescueboot 8 User Manuals
+.SH NAME
+update-grml-rescueboot \- Script to integrate Grml ISO for booting via GRUB
+.SH SYNOPSIS
+\fBupdate-grml-rescueboot [-f] [-a \fI32|64|96\fB] [-t \fIsmall|full\fB]
+\f1
+.SH DESCRIPTION
+grml-rescueboot integrates Grml ISO booting into GRUB. It provides a script for update-grub which looks for Grml ISO images in \fI/boot/grml\f1, and automatically adds an entry for each image. The purpose is to use one of those images to boot a Grml rescue system without using a CD, USB stick or network boot (PXE). \fIupdate-grml-rescueboot\f1 is a script which checks for the latest stable version of Grml (via download.grml.org), ensures there's enough free disk space in \fI/boot/grml\f1 and downloads the ISO to \fI/boot/grml\f1. It verifies the ISO signature and upon success executes update-grub then. Everything should be ready for booting a Grml ISO via GRUB then. This script makes integration of a Grml ISO into GRUB via grml-rescueboot even easier. All that needs to be done is install grml-rescueboot and invoke update-grml-rescueboot afterwards. Using the \fI-a\f1 and \fI-t\f1 options it's possible to use specific Grml ISOs. If none of those options is specific it defaults to the grml-full flavour, matching the currently running hardware architecture (i?86 or x86_64). 
+.SH OPTIONS
+.TP
+\fB-a \fIarg\fB\f1
+Choose Grml architecture, specified via \fIarg\f1. Supported flavours are '32', '64' and '96'. If unset defaults to the currently running architecture. 
+.TP
+\fB-f\f1
+Force execution, ignoring, e.g. existing ISO files and disk space checks for \fI/boot/grml\f1. 
+.TP
+\fB-h\f1
+Display usage information and exit script. 
+.TP
+\fB-t \fIarg\fB\f1
+Choose Grml flavour, specified via \fIarg\f1. Supported flavours are 'small' and 'full'. If unset defaults to 'full'. 
+.SH AUTHOR
+update-grml-rescueboot was written by Michael Prokop, based on a script by Felipe Sateler. 
+.SH BUGS
+Please report them towards Debian's BTS, see https://bugs.debian.org/grml-rescueboot. 
