@@ -9,6 +9,7 @@ Uploaders:
  Ulrich Dangel <mru@spamt.net>,
 Build-Depends:
  debhelper (>= 10~),
+ xmltoman,
 Standards-Version: 4.1.5
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
 Vcs-git: git://git.grml.org/grml-rescueboot.git

@@ -1,0 +1,87 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE manpage SYSTEM "http://masqmail.cx/xmltoman/xmltoman.dtd">
+<?xml-stylesheet type="text/xsl" href="http://masqmail.cx/xmltoman/xmltoman.xsl" ?>
+
+<manpage name="update-grml-rescueboot" section="8" desc="Script to integrate Grml ISO for booting via GRUB">
+
+<synopsis>
+  <cmd>update-grml-rescueboot [-f] [-a <arg>32|64|96</arg>] [-t <arg>small|full</arg>]</cmd>
+</synopsis>
+
+<description>
+  <p>
+    grml-rescueboot integrates Grml ISO booting into GRUB.
+    It provides a script for update-grub which looks for Grml ISO images in <file>/boot/grml</file>,
+    and automatically adds an entry for each image.
+    The purpose is to use one of those images to boot a Grml rescue system without using a CD, USB stick or network boot (PXE).
+
+    <file>update-grml-rescueboot</file> is a script which checks for the latest stable version of Grml (via download.grml.org),
+    ensures there's enough free disk space in <file>/boot/grml</file> and downloads the ISO to <file>/boot/grml</file>.
+    It verifies the ISO signature and upon success executes update-grub then.
+    Everything should be ready for booting a Grml ISO via GRUB then.
+
+    This script makes integration of a Grml ISO into GRUB via grml-rescueboot even easier.
+    All that needs to be done is install grml-rescueboot and invoke update-grml-rescueboot afterwards.
+    Using the <arg>-a</arg> and <arg>-t</arg> options it's possible to use specific Grml ISOs.
+    If none of those options is specific it defaults to the grml-full flavour,
+    matching the currently running hardware architecture (i?86 or x86_64).
+  </p>
+</description>
+
+<options>
+
+<option>
+  <p><opt>-a <arg>arg</arg></opt></p>
+  <optdesc>
+    <p>
+      Choose Grml architecture, specified via <arg>arg</arg>.
+      Supported flavours are '32', '64' and '96'.
+      If unset defaults to the currently running architecture.
+    </p>
+  </optdesc>
+</option>
+
+<option>
+  <p><opt>-f</opt></p>
+  <optdesc>
+    <p>
+      Force execution, ignoring, e.g. existing ISO files and disk space checks for <file>/boot/grml</file>.
+    </p>
+  </optdesc>
+</option>
+
+<option>
+  <p><opt>-h</opt></p>
+  <optdesc>
+    <p>
+      Display usage information and exit script.
+    </p>
+  </optdesc>
+</option>
+
+<option>
+  <p><opt>-t <arg>arg</arg></opt></p>
+  <optdesc>
+    <p>
+      Choose Grml flavour, specified via <arg>arg</arg>.
+      Supported flavours are 'small' and 'full'.
+      If unset defaults to 'full'.
+    </p>
+  </optdesc>
+</option>
+
+</options>
+
+<section name = "Author">
+  <p>
+    update-grml-rescueboot was written by Michael Prokop, based on a script by Felipe Sateler.
+  </p>
+</section>
+
+<section name = "Bugs">
+  <p>
+    Please report them towards Debian's BTS, see https://bugs.debian.org/grml-rescueboot.
+  </p>
+</section>
+
+</manpage>
