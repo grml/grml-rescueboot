@@ -17,6 +17,7 @@ Architecture: all
 Depends: grub-pc | grub-efi-amd64,
          ${misc:Depends},
          ${shlibs:Depends}
+Recommends: gpgv, wget, debian-keyring
 Description: Integrates Grml ISO booting into GRUB
  This package provides a script for update-grub which looks for
  Grml ISO images in /boot/grml and automatically adds an entry
