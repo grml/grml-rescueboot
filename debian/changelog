@@ -1,3 +1,18 @@
+grml-rescueboot (0.5.0) unstable; urgency=medium
+
+  The "你好, first upload from debconf18 @ Taiwan" release
+
+  * [f34b488] Bump Standards-Version to 4.1.5
+  * [5e05df1] Add gpg, wget + debian-keyring to Recommends
+  * [74c0e31] New script update-grml-rescueboot. Thanks to Felipe Sateler
+    <fsateler@debian.org> for the feature request and initial version of
+    the script (Closes: #754393)
+  * [6bc8a41] Execute wrap-and-sort on debian directory
+  * [8f3e81e] Provide manpage for update-grml-rescueboot
+  * [73d42be] Switch from debian/install to Makefile approach
+
+ -- Michael Prokop <mika@grml.org>  Sun, 22 Jul 2018 14:12:41 +0200
+
 grml-rescueboot (0.4.7) unstable; urgency=medium
 
   [ Christian Hofstaedtler ]
