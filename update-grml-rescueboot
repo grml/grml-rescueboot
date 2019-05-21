@@ -150,4 +150,4 @@ fi
 echo "Invoking 'update-grub' now."
 update-grub
 
-echo "Sucessfully finished grml-rescueboot integration."
+echo "Successfully finished grml-rescueboot integration."
