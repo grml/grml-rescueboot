@@ -116,6 +116,8 @@ ${grub_prep}
         export iso_path
         kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
         export kernelopts
+        # support booting recent GRUB versions on UEFI systems
+        rmmod tpm
         loopback loop "${rel_dirname%/}/$grml"
         set root=(loop)
         configfile /boot/grub/loopback.cfg
