@@ -1,3 +1,12 @@
+grml-rescueboot (0.5.1) unstable; urgency=medium
+
+  * [81780ff] Fix minor typo (Sucessfully -> Successfully)
+  * [1f30a2c] Unload tpm module to support booting ISOs with GRUB 2.04 on
+    UEFI systems. Thanks to Vasek Opekar <opekar@eccam.com> for the bug
+    report (Closes: #975835)
+
+ -- Michael Prokop <mika@grml.org>  Wed, 23 Dec 2020 17:14:37 +0100
+
 grml-rescueboot (0.5.0) unstable; urgency=medium
 
   The "你好, first upload from debconf18 @ Taiwan" release
