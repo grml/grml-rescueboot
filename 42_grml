@@ -98,6 +98,11 @@ for grmliso in $iso_list ; do
       dependencies=$(get_dependencies ${device})
       dep_string=""
       for dep in $dependencies $device ; do
+        case "$dep" in
+          /dev/md*)
+          md_name="$(mdadm --detail --export "$dep" | sed -ne 's/MD_NAME=//p')"
+          dep="/dev/md/$md_name"
+        esac
         dep_string="$dep_string,$dep"
       done
       dep_string=${dep_string#,}
