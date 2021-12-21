@@ -34,7 +34,7 @@ usage() {
   echo "Usage: $(basename "$0") [-f] [-a <32|64|96>] [-t <small|full>]"
 }
 
-while getopts ":a::t::f:h" opt ; do
+while getopts ":a:t:fh" opt ; do
   case ${opt} in
     a)
       if [ "${OPTARG}" = 32 ] || [ "${OPTARG}" = 64 ] || [ "${OPTARG}" = 96 ] ; then
