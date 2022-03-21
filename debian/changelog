@@ -1,3 +1,14 @@
+grml-rescueboot (0.5.2) unstable; urgency=medium
+
+  [ Allan Laal ]
+  * [135c83b] Fix encpasswd value is ignored
+
+  [ sgf ]
+  * [35e968c] Fix booting from mdadm raid
+  * [df317ca] Fix '-f' option and getopts optstring (Closes: #1005935)
+
+ -- Michael Prokop <mika@grml.org>  Mon, 21 Mar 2022 16:25:10 +0100
+
 grml-rescueboot (0.5.1) unstable; urgency=medium
 
   * [81780ff] Fix minor typo (Sucessfully -> Successfully)
