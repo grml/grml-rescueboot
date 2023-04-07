@@ -86,6 +86,13 @@ for file in "${ISO_LOCATION}"/*.iso ; do
      fi
 done
 
+indent='        '
+submenu_indent=
+if [ -n "${GRUB_SUBMENU}" ] && [ -n "${iso_list}" ] ; then
+  echo "submenu \"${GRUB_SUBMENU}\" \$menuentry_id_option \"grml-rescueboot\" {"
+  submenu_indent="${indent}"
+fi
+
 for grmliso in $iso_list ; do
   rel_dirname="$(dirname $(make_system_path_relative_to_its_root $grmliso))"
   grml="$(basename $grmliso)"
@@ -112,9 +119,9 @@ for grmliso in $iso_list ; do
 
   echo "Found Grml ISO image: $grmliso" >&2
   title="Grml Rescue System ($grml)"
-  grub_prep=$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
+  grub_prep=$(prepare_grub_to_access_device "${device}" | sed -e "s/^/${indent}/")
 
-  cat << EOF
+  sed -e "s/^/${submenu_indent}/" << EOF
 menuentry "${title}" {
 ${grub_prep}
         iso_path="${rel_dirname%/}/${grml}"
@@ -129,5 +136,9 @@ ${grub_prep}
 }
 EOF
 done
+
+if [ -n "${GRUB_SUBMENU}" ] && [ -n "${iso_list}" ] ; then
+  echo "} # end submenu \"${GRUB_SUBMENU}\""
+fi
 
 ## END OF FILE #################################################################
