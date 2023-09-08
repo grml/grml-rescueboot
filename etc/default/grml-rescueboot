@@ -3,6 +3,10 @@
 # Location of ISOs:
 # ISO_LOCATION="/boot/grml/"
 
+# To place the rescue boot entries into a GRUB submenu,
+# set this to the desired menu name:
+# GRUB_SUBMENU='Grml Rescue Boot menu'
+
 # To set any specific bootoptions for rescue images
 # present in /boot/grml just set and enable the following option:
 # CUSTOM_BOOTOPTIONS='ssh=password lang=de'
