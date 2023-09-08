@@ -74,10 +74,17 @@ get_dependencies() {
     break
   done
   echo $dependencies
-
 }
 
-
+get_iso_identifier() {
+  local iso="$1"
+  local id=
+  if isoinfo --version >/dev/null 2>&1 ; then
+    id=$(isoinfo -d -i "${iso}" | grep '^Volume id:' | sed -e 's/^[^:]*: *//')
+    [ -n "${id}" ] || id=$(isoinfo -d -i "${iso}" | grep '^Application id:' | sed -e 's/^[^:]*: *//')
+  fi
+  echo "${id}"
+}
 
 iso_list=""
 for file in "${ISO_LOCATION}"/*.iso ; do
@@ -118,8 +125,13 @@ for grmliso in $iso_list ; do
   esac
 
   echo "Found Grml ISO image: $grmliso" >&2
-  title="Grml Rescue System ($grml)"
-  grub_prep=$(prepare_grub_to_access_device "${device}" | sed -e "s/^/${indent}/")
+  iso_id=$(get_iso_identifier "${grmliso}")
+  if [ -n "${iso_id}" ] ; then
+    title="${iso_id} (${grml})"
+  else
+    title="Grml Rescue System (${grml})"
+  fi
+  grub_prep=$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
 
   sed -e "s/^/${submenu_indent}/" << EOF
 menuentry "${title}" {

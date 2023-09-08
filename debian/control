@@ -23,6 +23,7 @@ Depends:
  ${shlibs:Depends},
 Recommends:
  debian-keyring,
+ genisoimage,
  gpgv,
  wget,
 Description: Integrates Grml ISO booting into GRUB
