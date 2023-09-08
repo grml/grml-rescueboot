@@ -1,3 +1,11 @@
+grml-rescueboot (0.6.0) unstable; urgency=medium
+
+  [ Daniel Richard G ]
+  * [2772778] Add new GRUB_SUBMENU functionality and config parameter
+  * [517bcbd] Try using isoinfo(1) to extract an ISO image identifier
+
+ -- Michael Prokop <mika@grml.org>  Fri, 08 Sep 2023 11:34:54 +0200
+
 grml-rescueboot (0.5.2) unstable; urgency=medium
 
   [ Allan Laal ]
