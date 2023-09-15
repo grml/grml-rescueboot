@@ -124,27 +124,33 @@ for grmliso in $iso_list ; do
     ;;
   esac
 
-  echo "Found Grml ISO image: $grmliso" >&2
+  echo "Found grml-rescueboot ISO image: ${grmliso}" >&2
   iso_id=$(get_iso_identifier "${grmliso}")
   if [ -n "${iso_id}" ] ; then
     title="${iso_id} (${grml})"
   else
-    title="Grml Rescue System (${grml})"
+    title="${grml}"
   fi
-  grub_prep=$(prepare_grub_to_access_device "$device" | sed -e "s/^/        /")
+  grub_prep=$(prepare_grub_to_access_device "${device}" | sed -e "s/^/${indent}/")
+  grub_iso_path="${rel_dirname%/}/${grml}"
 
   sed -e "s/^/${submenu_indent}/" << EOF
 menuentry "${title}" {
 ${grub_prep}
-        iso_path="${rel_dirname%/}/${grml}"
+        iso_path="${grub_iso_path}"
         export iso_path
         kernelopts=" $CUSTOM_BOOTOPTIONS $additional_param "
         export kernelopts
         # support booting recent GRUB versions on UEFI systems
+        # (see bugs.debian.org/959425)
         rmmod tpm
-        loopback loop "${rel_dirname%/}/$grml"
+        loopback loop "\$iso_path"
         set root=(loop)
         configfile /boot/grub/loopback.cfg
+        unset root
+        loopback -d loop
+        unset iso_path
+        unset kernelopts
 }
 EOF
 done
