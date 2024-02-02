@@ -1,3 +1,10 @@
+grml-rescueboot (0.6.1) unstable; urgency=medium
+
+  [ Daniel Richard G ]
+  * [cbb6227] Minor tweaks to terminal output, variables, and GRUB stanza
+
+ -- Michael Prokop <mika@grml.org>  Fri, 02 Feb 2024 16:13:55 +0100
+
 grml-rescueboot (0.6.0) unstable; urgency=medium
 
   [ Daniel Richard G ]
