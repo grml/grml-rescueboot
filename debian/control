@@ -12,7 +12,7 @@ Build-Depends:
  xmltoman,
 Standards-Version: 4.1.5
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
-Vcs-git: git://git.grml.org/grml-rescueboot.git
+Vcs-Git: git://git.grml.org/grml-rescueboot.git
 Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
 
 Package: grml-rescueboot
