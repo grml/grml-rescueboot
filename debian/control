@@ -13,8 +13,8 @@ Build-Depends:
 Standards-Version: 4.1.5
 Rules-Requires-Root: no
 Homepage: http://git.grml.org/?p=grml-rescueboot.git
-Vcs-Git: git://git.grml.org/grml-rescueboot.git
-Vcs-Browser: http://git.grml.org/?p=grml-rescueboot.git
+Vcs-Git: https://github.com/grml/grml-rescueboot.git
+Vcs-Browser: https://github.com/grml/grml-rescueboot
 
 Package: grml-rescueboot
 Architecture: all
