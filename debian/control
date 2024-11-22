@@ -8,7 +8,7 @@ Uploaders:
 Build-Depends:
  debhelper (>= 10~),
  xmltoman,
-Standards-Version: 4.1.5
+Standards-Version: 4.7.0
 Rules-Requires-Root: no
 Homepage: https://github.com/grml/grml-rescueboot
 Vcs-Git: https://github.com/grml/grml-rescueboot.git
