@@ -1,3 +1,21 @@
+grml-rescueboot (0.6.2) unstable; urgency=medium
+
+  [ Chris Hofstaedtler ]
+  * [a489df7] d/control: Replace deprecated Section: extra
+  * [1127450] d/control: Capitalize Vcs-Git
+  * [5c2d8af] d/control: set Rules-Requires-Root: no
+  * [48e86bc] debian: update Vcs-Git and Vcs-Browser
+
+  [ Michael Prokop ]
+  * [b850d8f] Ship debian/gbp.conf for gbp usage
+  * [61f7f6b] d/control: update Uploaders field
+  * [2376478] d/control Bump Standards-Version to 4.7.0
+  * [7ecf1cc] d/control: bump compat version to 13 via debhelper-compat +
+    drop debian/compat
+  * [c7d2bc3] Drop deprecated debian/grml-rescueboot.lintian-overrides
+
+ -- Michael Prokop <mika@grml.org>  Fri, 22 Nov 2024 17:04:54 +0100
+
 grml-rescueboot (0.6.1) unstable; urgency=medium
 
   [ Daniel Richard G ]
