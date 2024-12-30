@@ -75,7 +75,7 @@ case ${arch} in
 esac
 
 echo "Finding out latest ISO image..."
-date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml-(full|small)-([0-9]{4}\.[0-9]{2})-('"$grmlarch"')\.iso.*/\2/p' | sort | tail -1)
+date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml-('"$grmlflavor"')-([0-9]{4}\.[0-9]{2})-('"$grmlarch"')\.iso.*/\2/p' | sort | tail -1)
 
 if [ -z "${date}" ] ; then
   echo "ERROR: Could not find out latest ISO." >&2
