@@ -6,7 +6,7 @@
 set -eu -o pipefail
 
 # defaults
-isotype=full
+grmlflavor=full
 force=0
 retrieved_iso=0
 
@@ -37,7 +37,7 @@ while getopts ":a:t:fh" opt ; do
   case ${opt} in
     t)
       if [ "${OPTARG}" = "full" ] || [ "${OPTARG}" = "small" ] ; then
-	isotype="${OPTARG}"
+	grmlflavor="${OPTARG}"
       else
 	echo "ERROR: Invalid value '${OPTARG}'. Supported values: small, full" >&2
 	usage >&2 ; exit 1
@@ -91,7 +91,7 @@ if [ -z "${diskfree}" ] ; then
   exit 1
 fi
 
-if [ "${isotype}" = "full" ] && [ "${diskfree}" -lt 1048576 ] ; then
+if [ "${grmlflavor}" = "full" ] && [ "${diskfree}" -lt 1048576 ] ; then
   if [ "${force}" = "1" ] ; then
     echo "WARN: There might not be enough free disk space in /boot, continuing anyway as requested via -f."
   else
@@ -99,7 +99,7 @@ if [ "${isotype}" = "full" ] && [ "${diskfree}" -lt 1048576 ] ; then
     echo "Note: >=1GB for grml-full recommended (use -f to force download anyway)."
     exit 1
   fi
-elif [ "${isotype}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
+elif [ "${grmlflavor}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
   if [ "${force}" = "1" ] ; then
     echo "WARN: There might not be enough free disk space in /boot, continuing anyway as requested via -f."
   else
@@ -109,7 +109,7 @@ elif [ "${isotype}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
   fi
 fi
 
-isoname="grml-${isotype}-${date}-${grmlarch}.iso"
+isoname="grml-${grmlflavor}-${date}-${grmlarch}.iso"
 
 if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
   echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
