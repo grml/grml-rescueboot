@@ -113,7 +113,7 @@ isoname="grml-${grmlflavor}-${date}-${grmlarch}.iso"
 
 if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
   echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
-  wget -O "${output_directory}/${isoname}" "http://download.grml.org/${isoname}"
+  wget -O "${output_directory}/${isoname}.tmp" "http://download.grml.org/${isoname}"
   retrieved_iso=1
 elif [ -f "${output_directory}/${isoname}" ] ; then
   echo "Found local ${output_directory}/${isoname}, skipping download (use -f to force download)."
@@ -124,14 +124,14 @@ if [ "${retrieved_iso}" = "1" ] ; then
   echo "Verifying ISO..."
   wget --quiet -O "${sig}" "http://download.grml.org/${isoname}.asc"
 
-  if ! gpgv --keyring /usr/share/keyrings/debian-keyring.gpg "${sig}" "${output_directory}/${isoname}" ; then
-    echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.untrusted'." >&2
-    mv "${output_directory}/${isoname}" "${output_directory}/${isoname}.untrusted"
+  if ! gpgv --keyring /usr/share/keyrings/debian-keyring.gpg "${sig}" "${output_directory}/${isoname}.tmp" ; then
+    echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.tmp'." >&2
     rm "${sig}"
     exit 1
   fi
 
   rm "${sig}"
+  mv "${output_directory}/${isoname}.tmp" "${output_directory}/${isoname}"
 
   echo "ISO file is OK."
 fi
