@@ -7,7 +7,6 @@ set -eu -o pipefail
 
 # defaults
 isotype=full
-bitwidth=auto
 force=0
 retrieved_iso=0
 
@@ -31,19 +30,11 @@ if [ ${#missing_packages[@]} -ne 0 ] ; then
 fi
 
 usage() {
-  echo "Usage: $(basename "$0") [-f] [-a <32|64|96>] [-t <small|full>]"
+  echo "Usage: $(basename "$0") [-f] [-t <small|full>]"
 }
 
 while getopts ":a:t:fh" opt ; do
   case ${opt} in
-    a)
-      if [ "${OPTARG}" = 32 ] || [ "${OPTARG}" = 64 ] || [ "${OPTARG}" = 96 ] ; then
-	bitwidth="$OPTARG"
-      else
-	echo "ERROR: Invalid value '${OPTARG}'. Supported values: 32, 64, 96" >&2
-	usage >&2 ; exit 1
-      fi
-      ;;
     t)
       if [ "${OPTARG}" = "full" ] || [ "${OPTARG}" = "small" ] ; then
 	isotype="${OPTARG}"
@@ -68,22 +59,20 @@ while getopts ":a:t:fh" opt ; do
   esac
 done
 
-if [ "${bitwidth}" = auto ] ; then
-  arch="$(uname -m)"
-  case ${arch} in
-    i?86)
-      bitwidth=32
-      ;;
-    x86_64)
-      bitwidth=64
-      ;;
-    *)
-      echo "ERROR: Unknown architecture '${arch}', please specify -a flag." >&2
-      usage >&2
-      exit 1
-      ;;
-  esac
-fi
+arch="$(uname -m)"
+case ${arch} in
+  i?86)
+    bitwidth=32
+    ;;
+  x86_64)
+    bitwidth=64
+    ;;
+  *)
+    echo "ERROR: Unsupported architecture '${arch}'." >&2
+    usage >&2
+    exit 1
+    ;;
+esac
 
 echo "Finding out latest ISO image..."
 date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml[0-9]{2}-(full|small)_([0-9]{4}\.[0-9]{2})\.iso.*/\2/p' | sort | tail -1)
