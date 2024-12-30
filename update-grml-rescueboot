@@ -11,7 +11,7 @@ bitwidth=auto
 force=0
 retrieved_iso=0
 
-declare -A bin_to_pkg=( [update-grub]=grub-pc [wget]=wget [gpgv]=gpgv )
+declare -A bin_to_pkg=( [update-grub]=grub2-common [wget]=wget [gpgv]=gpgv )
 declare -a missing_packages=()
 for binary in "${!bin_to_pkg[@]}" ; do
   if ! which "${binary}" &>/dev/null ; then
