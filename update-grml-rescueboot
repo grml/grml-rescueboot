@@ -61,11 +61,11 @@ done
 
 arch="$(uname -m)"
 case ${arch} in
-  i?86)
-    bitwidth=32
+  aarch64)
+    grmlarch=arm64
     ;;
   x86_64)
-    bitwidth=64
+    grmlarch=amd64
     ;;
   *)
     echo "ERROR: Unsupported architecture '${arch}'." >&2
@@ -75,7 +75,7 @@ case ${arch} in
 esac
 
 echo "Finding out latest ISO image..."
-date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml[0-9]{2}-(full|small)_([0-9]{4}\.[0-9]{2})\.iso.*/\2/p' | sort | tail -1)
+date=$(wget --quiet -O- http://download.grml.org/ | sed --regex -n 's/.*grml-(full|small)-([0-9]{4}\.[0-9]{2})-('"$grmlarch"')\.iso.*/\2/p' | sort | tail -1)
 
 if [ -z "${date}" ] ; then
   echo "ERROR: Could not find out latest ISO." >&2
@@ -109,7 +109,7 @@ elif [ "${isotype}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
   fi
 fi
 
-isoname="grml${bitwidth}-${isotype}_${date}.iso"
+isoname="grml-${isotype}-${date}-${grmlarch}.iso"
 
 if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
   echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
