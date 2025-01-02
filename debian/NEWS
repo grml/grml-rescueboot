@@ -1,0 +1,12 @@
+grml-rescueboot (0.6.3) unstable; urgency=medium
+
+  The end of i386
+  ---------------
+
+  As announced on [1] Grml no longer provides i386 PC ("32bit x86")
+  releases. For this reason, update-grml-rescueboot can also no longer
+  download a current Grml release for i386.
+
+  [1] https://blog.grml.org/archives/416-grml32-sunset.html
+
+ -- Chris Hofstaedtler <ch@grml.org>  Thu, 02 Jan 2025 15:24:00 +0100
