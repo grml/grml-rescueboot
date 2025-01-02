@@ -1,3 +1,18 @@
+grml-rescueboot (0.6.3) unstable; urgency=medium
+
+  * [366c043] Depends: switch to grub2-common
+    update-grub is in that package. Should also work on arm64.
+  * [8a4f714] update-grml-rescueboot: remove -a (bitwidth) flag
+  * [dc09c72] update-grml-rescueboot: support new ISO names and archs
+    (Closes: #1091702)
+  * [66655b2] update-grml-rescueboot: rename isotype to grmlflavor
+  * [d833bb9] update-grml-rescueboot: use grmlflavor in version regex
+  * [4a261a9] update-grml-rescueboot: do not leave broken ISO in place on download errors
+  * [9e657a0] update-grml-rescueboot: use https for downloads instead of http
+  * [a2e6dc7] Add NEWS entry about i386
+
+ -- Chris Hofstaedtler <ch@grml.org>  Thu, 02 Jan 2025 15:25:57 +0100
+
 grml-rescueboot (0.6.2) unstable; urgency=medium
 
   [ Chris Hofstaedtler ]
