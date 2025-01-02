@@ -1,3 +1,13 @@
+grml-rescueboot (0.5.2+deb12u1) bookworm; urgency=medium
+
+  * update-grml-rescueboot: remove -a (bitwidth) flag
+  * update-grml-rescueboot: support new ISO names and archs (Closes: #1091702)
+  * update-grml-rescueboot: rename isotype to grmlflavor
+  * update-grml-rescueboot: use grmlflavor in version regex
+  * Add NEWS entry about i386
+
+ -- Chris Hofstaedtler <ch@grml.org>  Thu, 02 Jan 2025 18:37:31 +0100
+
 grml-rescueboot (0.5.2) unstable; urgency=medium
 
   [ Allan Laal ]
