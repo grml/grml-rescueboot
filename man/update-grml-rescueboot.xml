@@ -5,7 +5,7 @@
 <manpage name="update-grml-rescueboot" section="8" desc="Script to integrate Grml ISO for booting via GRUB">
 
 <synopsis>
-  <cmd>update-grml-rescueboot [-f] [-a <arg>32|64|96</arg>] [-t <arg>small|full</arg>]</cmd>
+  <cmd>update-grml-rescueboot [-f] [-t <arg>small|full</arg>]</cmd>
 </synopsis>
 
 <description>
@@ -14,32 +14,25 @@
     It provides a script for update-grub which looks for Grml ISO images in <file>/boot/grml</file>,
     and automatically adds an entry for each image.
     The purpose is to use one of those images to boot a Grml rescue system without using a CD, USB stick or network boot (PXE).
+  </p>
 
+  <p>
     <file>update-grml-rescueboot</file> is a script which checks for the latest stable version of Grml (via download.grml.org),
-    ensures there's enough free disk space in <file>/boot/grml</file> and downloads the ISO to <file>/boot/grml</file>.
+    ensures there is enough free disk space in <file>/boot/grml</file> and downloads the ISO to <file>/boot/grml</file>.
     It verifies the ISO signature and upon success executes update-grub then.
     Everything should be ready for booting a Grml ISO via GRUB then.
+  </p>
 
-    This script makes integration of a Grml ISO into GRUB via grml-rescueboot even easier.
-    All that needs to be done is install grml-rescueboot and invoke update-grml-rescueboot afterwards.
-    Using the <arg>-a</arg> and <arg>-t</arg> options it's possible to use specific Grml ISOs.
-    If none of those options is specific it defaults to the grml-full flavour,
-    matching the currently running hardware architecture (i?86 or x86_64).
+  <p>
+    This script makes it even easier to integrate a Grml ISO into GRUB via grml-rescueboot.
+    All that needs to be done is to install grml-rescueboot and then invoke update-grml-rescueboot.
+    Using the <arg>-t</arg> option, it is possible to use specific Grml ISOs.
+    If this option is not specified, it defaults to the <arg>full</arg> flavour
+    matching the hardware architecture (amd64 or arm64).
   </p>
 </description>
 
 <options>
-
-<option>
-  <p><opt>-a <arg>arg</arg></opt></p>
-  <optdesc>
-    <p>
-      Choose Grml architecture, specified via <arg>arg</arg>.
-      Supported flavours are '32', '64' and '96'.
-      If unset defaults to the currently running architecture.
-    </p>
-  </optdesc>
-</option>
 
 <option>
   <p><opt>-f</opt></p>
