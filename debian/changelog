@@ -1,3 +1,10 @@
+grml-rescueboot (0.6.4) unstable; urgency=medium
+
+  [ Peter Marschall ]
+  * [0f9003a] Remove option -a from man page (Closes: #1092265)
+
+ -- Chris Hofstaedtler <ch@grml.org>  Mon, 06 Jan 2025 19:32:06 +0100
+
 grml-rescueboot (0.6.3) unstable; urgency=medium
 
   * [366c043] Depends: switch to grub2-common
