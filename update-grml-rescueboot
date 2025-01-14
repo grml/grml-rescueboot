@@ -20,9 +20,16 @@ for binary in "${!bin_to_pkg[@]}" ; do
 done
 
 keyringname="/usr/share/keyrings/debian-keyring"
-keyring="${keyringname}.gpg"
+keyring=""
+for pgpext in pgp gpg; do
+  keyring="${keyringname}.${pgpext}"
+  if [ -r "${keyring}" ] ; then
+    break
+  fi
+  keyring=""
+done
 if [ -z "${keyring}" ] ; then
-  echo "ERROR: File ${keyringname}.gpg not found." >&2
+  echo "ERROR: File ${keyringname}.{pgp,gpg} not found." >&2
   missing_packages+=( debian-keyring )
 fi
 
