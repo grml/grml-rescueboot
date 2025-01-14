@@ -1,6 +1,6 @@
 #!/bin/bash
 # Simple script to download a Grml ISO image to use with grml-rescueboot
-# Needs the Debian keyring, gpgv + wget
+# Needs the Debian keyring, sopv + wget
 # Licensed under GPL v2+
 
 set -eu -o pipefail
@@ -10,17 +10,26 @@ grmlflavor=full
 force=0
 retrieved_iso=0
 
-declare -A bin_to_pkg=( [update-grub]=grub2-common [wget]=wget [gpgv]=gpgv )
+declare -A bin_to_pkg=( [update-grub]=grub2-common [wget]=wget [sopv]=sqopv )
 declare -a missing_packages=()
 for binary in "${!bin_to_pkg[@]}" ; do
-  if ! which "${binary}" &>/dev/null ; then
+  if ! command -v "${binary}" &>/dev/null ; then
     echo "ERROR: Binary $binary not found." >&2
     missing_packages+=( ${bin_to_pkg[$binary]} )
   fi
 done
 
-if ! [ -r /usr/share/keyrings/debian-keyring.gpg ] ; then
-  echo "ERROR: File /usr/share/keyrings/debian-keyring.gpg not found." >&2
+keyringname="/usr/share/keyrings/debian-keyring"
+keyring=""
+for pgpext in pgp gpg; do
+  keyring="${keyringname}.${pgpext}"
+  if [ -r "${keyring}" ] ; then
+    break
+  fi
+  keyring=""
+done
+if [ -z "${keyring}" ] ; then
+  echo "ERROR: File ${keyringname}.{pgp,gpg} not found." >&2
   missing_packages+=( debian-keyring )
 fi
 
@@ -85,7 +94,7 @@ fi
 output_directory="/boot/grml"
 mkdir -p "${output_directory}"
 
-diskfree=$(df --output=avail /boot/grml | tail -1)
+diskfree=$(df --output=avail "${output_directory}" | tail -1)
 if [ -z "${diskfree}" ] ; then
   echo "ERROR: couldn't calculate free disk space in /boot." >&2
   exit 1
@@ -110,13 +119,15 @@ elif [ "${grmlflavor}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
 fi
 
 isoname="grml-${grmlflavor}-${date}-${grmlarch}.iso"
+isofile="${output_directory}/${isoname}"
+isofiletmp="${isofile}.tmp"
 
-if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
-  echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
-  wget -O "${output_directory}/${isoname}.tmp" "https://download.grml.org/${isoname}"
+if [ "${force}" = "1" ] || ! [ -f "${isofile}" ] ; then
+  echo "Downloading Grml ISO to '${isofile}'."
+  wget -O "${isofiletmp}" "https://download.grml.org/${isoname}"
   retrieved_iso=1
-elif [ -f "${output_directory}/${isoname}" ] ; then
-  echo "Found local ${output_directory}/${isoname}, skipping download (use -f to force download)."
+elif [ -f "${isofile}" ] ; then
+  echo "Found local ${isofile}, skipping download (use -f to force download)."
 fi
 
 if [ "${retrieved_iso}" = "1" ] ; then
@@ -124,14 +135,14 @@ if [ "${retrieved_iso}" = "1" ] ; then
   echo "Verifying ISO..."
   wget --quiet -O "${sig}" "https://download.grml.org/${isoname}.asc"
 
-  if ! gpgv --keyring /usr/share/keyrings/debian-keyring.gpg "${sig}" "${output_directory}/${isoname}.tmp" ; then
-    echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.tmp'." >&2
+  if ! sopv verify "${sig}" "${keyring}" <"${isofiletmp}" ; then
+    echo "ERROR: ISO file will be left in '${isofiletmp}'." >&2
     rm "${sig}"
     exit 1
   fi
 
   rm "${sig}"
-  mv "${output_directory}/${isoname}.tmp" "${output_directory}/${isoname}"
+  mv "${isofiletmp}" "${isofile}"
 
   echo "ISO file is OK."
 fi

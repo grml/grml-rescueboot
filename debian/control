@@ -23,7 +23,7 @@ Depends:
 Recommends:
  debian-keyring,
  genisoimage,
- gpgv,
+ sqopv | sopv,
  wget,
 Description: Integrates Grml ISO booting into GRUB
  This package provides a script for update-grub which looks for
