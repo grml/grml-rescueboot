@@ -119,13 +119,15 @@ elif [ "${grmlflavor}" = "small" ] && [ "${diskfree}" -lt 524288 ] ; then
 fi
 
 isoname="grml-${grmlflavor}-${date}-${grmlarch}.iso"
+isofile="${output_directory}/${isoname}"
+isofiletmp="${isofile}.tmp"
 
-if [ "${force}" = "1" ] || ! [ -f "${output_directory}/${isoname}" ] ; then
-  echo "Downloading Grml ISO to '${output_directory}/${isoname}'."
-  wget -O "${output_directory}/${isoname}.tmp" "https://download.grml.org/${isoname}"
+if [ "${force}" = "1" ] || ! [ -f "${isofile}" ] ; then
+  echo "Downloading Grml ISO to '${isofile}'."
+  wget -O "${isofiletmp}" "https://download.grml.org/${isoname}"
   retrieved_iso=1
-elif [ -f "${output_directory}/${isoname}" ] ; then
-  echo "Found local ${output_directory}/${isoname}, skipping download (use -f to force download)."
+elif [ -f "${isofile}" ] ; then
+  echo "Found local ${isofile}, skipping download (use -f to force download)."
 fi
 
 if [ "${retrieved_iso}" = "1" ] ; then
@@ -133,14 +135,14 @@ if [ "${retrieved_iso}" = "1" ] ; then
   echo "Verifying ISO..."
   wget --quiet -O "${sig}" "https://download.grml.org/${isoname}.asc"
 
-  if ! gpgv --keyring "${keyring}" "${sig}" "${output_directory}/${isoname}.tmp" ; then
-    echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.tmp'." >&2
+  if ! gpgv --keyring "${keyring}" "${sig}" "${isofiletmp}" ; then
+    echo "ERROR: ISO file will be left in '${isofiletmp}'." >&2
     rm "${sig}"
     exit 1
   fi
 
   rm "${sig}"
-  mv "${output_directory}/${isoname}.tmp" "${output_directory}/${isoname}"
+  mv "${isofiletmp}" "${isofile}"
 
   echo "ISO file is OK."
 fi
