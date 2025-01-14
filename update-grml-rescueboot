@@ -85,7 +85,7 @@ fi
 output_directory="/boot/grml"
 mkdir -p "${output_directory}"
 
-diskfree=$(df --output=avail /boot/grml | tail -1)
+diskfree=$(df --output=avail "${output_directory}" | tail -1)
 if [ -z "${diskfree}" ] ; then
   echo "ERROR: couldn't calculate free disk space in /boot." >&2
   exit 1
