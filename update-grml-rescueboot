@@ -1,6 +1,6 @@
 #!/bin/bash
 # Simple script to download a Grml ISO image to use with grml-rescueboot
-# Needs the Debian keyring, gpgv + wget
+# Needs the Debian keyring, sopv + wget
 # Licensed under GPL v2+
 
 set -eu -o pipefail
@@ -10,7 +10,7 @@ grmlflavor=full
 force=0
 retrieved_iso=0
 
-declare -A bin_to_pkg=( [update-grub]=grub2-common [wget]=wget [gpgv]=gpgv )
+declare -A bin_to_pkg=( [update-grub]=grub2-common [wget]=wget [sopv]=sqopv )
 declare -a missing_packages=()
 for binary in "${!bin_to_pkg[@]}" ; do
   if ! command -v "${binary}" &>/dev/null ; then
@@ -135,7 +135,7 @@ if [ "${retrieved_iso}" = "1" ] ; then
   echo "Verifying ISO..."
   wget --quiet -O "${sig}" "https://download.grml.org/${isoname}.asc"
 
-  if ! gpgv --keyring "${keyring}" "${sig}" "${isofiletmp}" ; then
+  if ! sopv verify "${sig}" "${keyring}" <"${isofiletmp}" ; then
     echo "ERROR: ISO file will be left in '${isofiletmp}'." >&2
     rm "${sig}"
     exit 1
