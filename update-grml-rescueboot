@@ -19,8 +19,10 @@ for binary in "${!bin_to_pkg[@]}" ; do
   fi
 done
 
-if ! [ -r /usr/share/keyrings/debian-keyring.gpg ] ; then
-  echo "ERROR: File /usr/share/keyrings/debian-keyring.gpg not found." >&2
+keyringname="/usr/share/keyrings/debian-keyring"
+keyring="${keyringname}.gpg"
+if [ -z "${keyring}" ] ; then
+  echo "ERROR: File ${keyringname}.gpg not found." >&2
   missing_packages+=( debian-keyring )
 fi
 
@@ -124,7 +126,7 @@ if [ "${retrieved_iso}" = "1" ] ; then
   echo "Verifying ISO..."
   wget --quiet -O "${sig}" "https://download.grml.org/${isoname}.asc"
 
-  if ! gpgv --keyring /usr/share/keyrings/debian-keyring.gpg "${sig}" "${output_directory}/${isoname}.tmp" ; then
+  if ! gpgv --keyring "${keyring}" "${sig}" "${output_directory}/${isoname}.tmp" ; then
     echo "ERROR: ISO file will be left in '${output_directory}/${isoname}.tmp'." >&2
     rm "${sig}"
     exit 1
