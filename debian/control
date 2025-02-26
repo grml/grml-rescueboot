@@ -25,8 +25,8 @@ Recommends:
  genisoimage,
  sqopv | sopv,
  wget,
-Description: Integrates Grml ISO booting into GRUB
- This package provides a script for update-grub which looks for
- Grml ISO images in /boot/grml and automatically adds an entry
- for each image. The purpose is to use one of those images to
- boot a Grml rescue system without using a CD or USB stick.
+Description: boot Grml from GRUB
+ Provides integration for GRUB to boot Grml, for example
+ to boot Grml as a rescue system without using a USB key or CD.
+ You can use update-grml-rescueboot to download the current
+ Grml ISO to your system.
