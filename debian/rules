@@ -1,23 +1,5 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
-
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
 
 %:
 	dh  $@
-
-#drwxr-xr-x root/root         0 2017-01-24 21:42 ./boot/grml/
-#-rw-r--r-- root/root       271 2014-08-31 19:30 ./etc/default/grml-rescueboot
-#-rwxr-xr-x root/root      3280 2015-06-19 09:21 ./etc/grub.d/42_grml
-#-rwxr-xr-x root/root      4346 2017-01-24 21:42 ./usr/sbin/update-grml-rescueboot
-#-rw-r--r-- root/root      1290 2014-08-31 19:30 ./usr/share/doc/grml-rescueboot/README
-#-rw-r--r-- root/root      1880 2017-01-24 21:42 ./usr/share/doc/grml-rescueboot/changelog.gz
-#-rw-r--r-- root/root      1315 2017-01-24 21:42 ./usr/share/doc/grml-rescueboot/copyright
-#-rw-r--r-- root/root       114 2014-08-31 19:30 ./usr/share/lintian/overrides/grml-rescueboot
-#-rw-r--r-- root/root       959 2017-01-24 21:42 ./usr/share/man/en/man8/update-grml-rescueboot.8.gz
