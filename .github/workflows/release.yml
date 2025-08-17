@@ -72,7 +72,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: deb
+          name: packages
           path: artifacts/
           run-id: ${{ steps.build-run.outputs.result }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

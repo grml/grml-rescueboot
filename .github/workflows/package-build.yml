@@ -34,11 +34,12 @@ jobs:
       - name: Archive build result
         uses: actions/upload-artifact@v4
         with:
-          name: deb
+          name: packages
           if-no-files-found: error
           retention-days: 14
           path: |
-            debian/artifacts/*
+            debian/artifacts/*.deb
+            debian/artifacts/*.tar.*
       - name: Comment PR with artifact link
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
@@ -47,11 +48,25 @@ jobs:
             const runId = context.runId;
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
-            const artifactUrl = `https://github.com/${repoOwner}/${repoName}/actions/runs/${runId}`;
+
+            // Get the artifact download URL
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: repoOwner,
+              repo: repoName,
+              run_id: runId
+            });
+
+            const packagesArtifact = artifacts.data.artifacts.find(artifact => artifact.name === 'packages');
+            if (!packagesArtifact) {
+              console.log('No packages artifact found');
+              return;
+            }
+
+            const artifactUrl = `https://github.com/${repoOwner}/${repoName}/actions/runs/${runId}/artifacts/${packagesArtifact.id}`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `📦 Build artifact is ready! Download it from the [workflow run](${artifactUrl}).`
+              body: `📦 Built packages are ready! [Download here](${artifactUrl}).`
             });
