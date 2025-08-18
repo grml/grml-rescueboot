@@ -15,7 +15,7 @@ declare -a missing_packages=()
 for binary in "${!bin_to_pkg[@]}" ; do
   if ! command -v "${binary}" &>/dev/null ; then
     echo "ERROR: Binary $binary not found." >&2
-    missing_packages+=( ${bin_to_pkg[$binary]} )
+    missing_packages+=( "${bin_to_pkg[$binary]}" )
   fi
 done
 
@@ -42,7 +42,7 @@ usage() {
   echo "Usage: $(basename "$0") [-f] [-t <small|full>]"
 }
 
-while getopts ":a:t:fh" opt ; do
+while getopts ":t:fh" opt ; do
   case ${opt} in
     t)
       if [ "${OPTARG}" = "full" ] || [ "${OPTARG}" = "small" ] ; then

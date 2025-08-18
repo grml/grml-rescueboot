@@ -4,17 +4,19 @@
 # Authors:       Grml team (grml.org), (c) Andreas Gredler <jimmy@grml.org>, Michael Prokop <mika@grml.org>
 # License:       This file is licensed under the GPL v2+.
 ################################################################################
+# shellcheck shell=dash
 
 set -e
 
 prefix=/usr
 exec_prefix=${prefix}
-bindir=${exec_prefix}/bin
 libdir=${exec_prefix}/lib
 
-if [ -r ${libdir}/grub/grub-mkconfig_lib ] ; then
-  . ${libdir}/grub/grub-mkconfig_lib
+if [ -r "${libdir}/grub/grub-mkconfig_lib" ] ; then
+  # shellcheck disable=SC1091
+  . "${libdir}/grub/grub-mkconfig_lib"
 elif [ -r /usr/share/grub/grub-mkconfig_lib ] ; then # fallback for e.g. Fedora
+  # shellcheck disable=SC1091
   . /usr/share/grub/grub-mkconfig_lib
 else
   echo "Could not locate file grub-mkconfig_lib, please report a bug." >&2
@@ -24,6 +26,7 @@ fi
 ISO_LOCATION="/boot/grml"
 
 if [ -r /etc/default/grml-rescueboot ] ; then
+  # shellcheck disable=SC1091
   . /etc/default/grml-rescueboot
 fi
 
@@ -31,14 +34,14 @@ resolve_dm_name() {
   retval="$1"
   base=${1##*/}
   for block in /sys/block /sys/class/block ; do
-    [ ! -d ${block}/${base}/dm ] && continue
-    retval="/dev/mapper/$(cat ${block}/${base}/dm/name)"
+    [ ! -d "${block}/${base}/dm" ] && continue
+    retval="/dev/mapper/$(cat "${block}/${base}/dm/name")"
     break
   done
   case "$retval" in
     /dev/dm-*)
     minor=${retval##*-}
-   retval="/dev/mapper/$(dmsetup info -C --noheadings -o name -j 253 -m $minor)"
+   retval="/dev/mapper/$(dmsetup info -C --noheadings -o name -j 253 -m "$minor")"
     ;;
   esac
 
@@ -47,10 +50,10 @@ resolve_dm_name() {
 
 get_dependencies() {
   device=${1}
-  if [ -z ${device} ] ; then
+  if [ -z "${device}" ] ; then
     return
   fi
-  device=$(readlink -f ${device})
+  device=$(readlink -f "${device}")
   case "$device" in
     /dev/mapper/*)
     device="/dev/dm-$(dmsetup info -C --noheadings -o minor "$device")"
@@ -61,19 +64,19 @@ get_dependencies() {
   dependencies=""
   additional_dependencies=""
   for block in /sys/block /sys/class/block ; do
-    [ ! -d ${block}/${base}/slaves ] && continue
-    for file in  ${block}/${base}/slaves/* ; do
+    [ ! -d "${block}/${base}/slaves" ] && continue
+    for file in  "${block}/${base}"/slaves/* ; do
       dep_name="/dev/${file##*/}"
-      dep_name=$(resolve_dm_name ${dep_name})
+      dep_name=$(resolve_dm_name "${dep_name}")
 
       # resolve recursively all dependencies
-      additional_dependencies=$(get_dependencies ${dep_name})
+      additional_dependencies=$(get_dependencies "${dep_name}")
 
       dependencies="$dependencies $additional_dependencies $dep_name"
     done
     break
   done
-  echo $dependencies
+  echo "$dependencies"
 }
 
 get_iso_identifier() {
@@ -101,15 +104,16 @@ if [ -n "${GRUB_SUBMENU}" ] && [ -n "${iso_list}" ] ; then
 fi
 
 for grmliso in $iso_list ; do
-  rel_dirname="$(dirname $(make_system_path_relative_to_its_root $grmliso))"
-  grml="$(basename $grmliso)"
-  device="$(${grub_probe} -t device ${grmliso})"
+  rel_dirname="$(dirname "$(make_system_path_relative_to_its_root "$grmliso")")"
+  grml="$(basename "$grmliso")"
+  # shellcheck disable=SC2154 # grub_probe is defined by grub-mkconfig_lib
+  device="$("${grub_probe}" -t device "${grmliso}")"
 
   additional_param=""
 
   case "$device" in
     /dev/mapper*|/dev/md*)
-      dependencies=$(get_dependencies ${device})
+      dependencies=$(get_dependencies "${device}")
       dep_string=""
       for dep in $dependencies $device ; do
         case "$dep" in
