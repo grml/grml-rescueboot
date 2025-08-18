@@ -1,3 +1,20 @@
+grml-rescueboot (0.6.7) unstable; urgency=medium
+
+  * [24d1310] d/rules: remove leftover comments
+  * [c82aeb7] 42_grml: assume /bin/sh is dash
+  * [0fff225] 42_grml: quote variables
+  * [4f0565d] update-grml-rescueboot: quote variable
+  * [96efed7] update-grml-rescueboot: drop -a from getopt
+  * [4879e15] 42_grml: ignore imported files
+  * [715e843] Import GitHub workflows for shellcheck and deb build
+  * [615e0c7] Enhance package-build workflow with tag support and PR comments
+  * [6f33d31] Add GitHub release workflow
+  * [530fdae] Improve workflow artifact handling and add tar.* packages
+  * [94c9f2f] Remove built man page
+  * [48a0a2b] Add README for GitHub
+
+ -- Chris Hofstaedtler <ch@grml.org>  Mon, 18 Aug 2025 16:41:00 +0200
+
 grml-rescueboot (0.6.6) unstable; urgency=medium
 
   * [250623a] Rewrite package description, partially address #1098870.
