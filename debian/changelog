@@ -1,3 +1,9 @@
+grml-rescueboot (0.6.8) unstable; urgency=medium
+
+  * [7e7326e] d/control: set X-Style: black
+
+ -- Chris Hofstaedtler <ch@grml.org>  Tue, 28 Apr 2026 16:47:48 +0200
+
 grml-rescueboot (0.6.7) unstable; urgency=medium
 
   * [24d1310] d/rules: remove leftover comments
