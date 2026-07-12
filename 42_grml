@@ -82,11 +82,17 @@ get_dependencies() {
 get_iso_identifier() {
   local iso="$1"
   local id=
+  local date=
   if isoinfo --version >/dev/null 2>&1 ; then
     id=$(isoinfo -d -i "${iso}" | grep '^Volume id:' | sed -e 's/^[^:]*: *//')
     [ -n "${id}" ] || id=$(isoinfo -d -i "${iso}" | grep '^Application id:' | sed -e 's/^[^:]*: *//')
+    date=$(isoinfo -debug -d -i "${iso}" 2>/dev/null | awk '/^Creation Date:/ {print $3$4$5}')
   fi
-  echo "${id}"
+  if [ -n "${id}" ] && [ -n "${date}" ]; then
+    echo "${id} [${date}]"
+  else
+    echo "${id}"
+  fi
 }
 
 iso_list=""
