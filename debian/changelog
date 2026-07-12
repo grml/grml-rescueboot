@@ -1,3 +1,10 @@
+grml-rescueboot (0.6.9) unstable; urgency=medium
+
+  * [a5274a6] Include ISO creation date information in GRUB menu entry.
+    Thanks to ebbi2017 for the suggestion and initial patch
+
+ -- Michael Prokop <mika@grml.org>  Sun, 12 Jul 2026 22:44:45 +0200
+
 grml-rescueboot (0.6.8) unstable; urgency=medium
 
   * [7e7326e] d/control: set X-Style: black
