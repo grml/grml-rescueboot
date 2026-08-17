@@ -38,6 +38,14 @@ if [ ${#missing_packages[@]} -ne 0 ] ; then
   exit 1
 fi
 
+cleanup() {
+  umount "${grml_mount}" || true
+  rmdir "${grml_mount}" || true
+}
+
+trap cleanup EXIT
+trap 'trap - EXIT; cleanup; exit 1' HUP INT PIPE TERM
+
 usage() {
   echo "Usage: $(basename "$0") [-f] [-t <small|full>]"
 }
@@ -67,6 +75,71 @@ while getopts ":t:fh" opt ; do
       ;;
   esac
 done
+
+efi_support() {
+  # Absence of an EFI runtime does not prevent loading efivarfs since commit
+  # 301de9a2055357375a4e1053d9df0f8f3467ff00 which landed in Linux v6.3.
+  # Unconditionally load it, in case nothing else attempted it.
+  modprobe efivarfs &>/dev/null || true
+
+  if [[ -d /sys/firmware/efi ]] ; then
+    return 0
+  fi
+
+  return 1
+}
+
+update-ukify() {
+  if ! efi_support ; then
+    echo "NOTE: NO EFI support, not setting up /efi/EFI/tools/grml.efi"
+    return 0
+  fi
+
+  if ! command -v ukify &>/dev/null ; then
+    echo "WARN: EFI support detected, but ukify not present. Consider installing systemd-ukify?"
+    return 0
+  fi
+
+  # support setting custom boot options via CUSTOM_BOOTOPTIONS
+  if [ -r /etc/default/grml-rescueboot ] ; then
+    . /etc/default/grml-rescueboot
+  fi
+
+  grml_mount="$(mktemp --directory --tmpdir grml.XXX)"
+
+  mount -o loop,ro "${isofile}" "${grml_mount}"
+
+  local cmdline initrd_file kernel_file
+
+  if ls "${grml_mount}"/boot/grub/*_default.cfg &>/dev/null ; then
+    echo "NOTE: identified GRUB file on ISO, using for kernel command line setup"
+    cmdline="findiso=${isofile}"
+    cmdline="${cmdline} $(grep -oP 'linux.*vmlinuz\K.*' "${grml_mount}"/boot/grub/*_default.cfg | head -1) ${CUSTOM_BOOTOPTIONS:-}"
+    kernel_file="$(awk '/ linux / {print $2}'  "${grml_mount}"/boot/grub/*_default.cfg | head -1)"
+    initrd_file="$(awk '/ initrd / {print $2}' "${grml_mount}"/boot/grub/*_default.cfg | head -1)"
+  else # we can't get the data from the GRUB default configuration
+    echo "WARN: could not find GRUB file on ISO, falling back for kernel command line setup"
+    local bootid live_media live_media_path
+    bootid="$(cat "${grml_mount}/conf/bootid.txt")"
+
+    live_media="$(find "${grml_mount}" -name '*.squashfs')"
+    live_media="${live_media%/*.squashfs}"
+    live_media="${live_media##"${grml_mount}"}"
+    live_media_path="live-media-path=${live_media}"
+
+    cmdline="boot=live findiso=${isofile} ${live_media_path} bootid=${bootid} ${CUSTOM_BOOTOPTIONS:-}"
+
+    kernel_file="/boot/${bootid%20????}/vmlinuz"
+    initrd_file="/boot/${bootid%20????}/initrd.img"
+  fi
+
+  mkdir -p /boot/efi/EFI/tools/
+  ukify build \
+      --linux="${grml_mount}/${kernel_file}" \
+      --initrd="${grml_mount}/${initrd_file}" \
+      --cmdline="${cmdline}" \
+      --output="/boot/efi/EFI/tools/grml.efi"
+}
 
 arch="$(uname -m)"
 case ${arch} in
@@ -149,5 +222,7 @@ fi
 
 echo "Invoking 'update-grub' now."
 update-grub
+
+update-ukify
 
 echo "Successfully finished grml-rescueboot integration."

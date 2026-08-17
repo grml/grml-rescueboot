@@ -25,6 +25,7 @@ Recommends:
  debian-keyring,
  genisoimage,
  sqopv | sopv,
+ systemd-ukify,
  wget,
 Description: boot Grml from GRUB
  Provides integration for GRUB to boot Grml, for example
