@@ -25,6 +25,7 @@ Recommends:
  debian-keyring,
  genisoimage,
  sqopv | sopv,
+ systemd-boot-tools,
  systemd-ukify,
  wget,
 Description: boot Grml from GRUB

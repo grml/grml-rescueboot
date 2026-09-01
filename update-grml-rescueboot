@@ -76,6 +76,27 @@ while getopts ":t:fh" opt ; do
   esac
 done
 
+findesp() {
+  local esp
+
+  if ! command -v bootctl &>/dev/null ; then
+    # important: this needs to go to stderr, otherwise that would be reported as esp directory
+    echo "WARN: EFI support detected, but bootctl not present. Consider installing systemd-boot-tools?" >&2
+  else
+    esp="$(bootctl --print-esp-path 2> /dev/null || true)"
+    if [ "${esp}" ]; then
+      echo "${esp}"
+      return
+    fi
+  fi
+
+  for esp in /efi /boot /boot/efi; do
+    [ -d "${esp}/EFI/" ] || continue
+    echo "${esp}"
+    return
+  done
+}
+
 efi_support() {
   # Absence of an EFI runtime does not prevent loading efivarfs since commit
   # 301de9a2055357375a4e1053d9df0f8f3467ff00 which landed in Linux v6.3.
@@ -109,7 +130,7 @@ update-ukify() {
 
   mount -o loop,ro "${isofile}" "${grml_mount}"
 
-  local cmdline initrd_file kernel_file
+  local cmdline esp_path initrd_file kernel_file
 
   if ls "${grml_mount}"/boot/grub/*_default.cfg &>/dev/null ; then
     echo "NOTE: identified GRUB file on ISO, using for kernel command line setup"
@@ -133,12 +154,14 @@ update-ukify() {
     initrd_file="/boot/${bootid%20????}/initrd.img"
   fi
 
-  mkdir -p /boot/efi/EFI/tools/
+  esp_path=$(findesp)
+
+  mkdir -p "${esp_path}"/EFI/tools/
   ukify build \
       --linux="${grml_mount}/${kernel_file}" \
       --initrd="${grml_mount}/${initrd_file}" \
       --cmdline="${cmdline}" \
-      --output="/boot/efi/EFI/tools/grml.efi"
+      --output="${esp_path}/EFI/tools/grml.efi"
 }
 
 arch="$(uname -m)"
