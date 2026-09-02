@@ -1,3 +1,12 @@
+grml-rescueboot (0.7.0) unstable; urgency=medium
+
+  * [311b126] Add support for Grml boot in UEFI shell prompt via ukify.
+    Thanks to Marco d'Itri <md@Linux.IT> for idea + initial patch
+  * [d7cd191] EFI support: do not assume that the ESP will be mounted on
+    /boot/efi/. Thanks to Marco d'Itri <md@Linux.IT> for initial patch
+
+ -- Michael Prokop <mika@grml.org>  Wed, 02 Sep 2026 19:21:15 +0200
+
 grml-rescueboot (0.6.9) unstable; urgency=medium
 
   * [a5274a6] Include ISO creation date information in GRUB menu entry.
